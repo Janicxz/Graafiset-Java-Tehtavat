@@ -137,19 +137,14 @@ public class PaaIkkuna extends javax.swing.JFrame {
         horoskooppiLista.add(new Horoskooppi("Skorpioni" ,"2020-10-24", "2020-11-22"));
         horoskooppiLista.add(new Horoskooppi("Jousimies" ,"2020-11-23", "2020-12-21"));
         horoskooppiLista.add(new Horoskooppi("Kauris" ,"2020-12-22", "2020-12-31"));
-        // Tupla poikkeus vuoden vaihteen takia
+        // Poikkeustapaus vuodenvaihteen takia
         horoskooppiLista.add(new Horoskooppi("Kauris" ,"2020-01-01", "2020-01-20"));
     }
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       //String valittuKuukausi = (String)jComboBoxKuukaudet.getSelectedItem();
-       //System.out.println(valittuKuukausi);
-       // isAfter() isBefore() isEqual()
-       //LocalDate.parse("")
-       // LocalDate.parse("2022-01-04");
        int valittuKuukausiInt = (int)jComboBoxKuukaudet.getSelectedIndex()+1;
-       //System.out.println(valittuKuukausiInt);
        int valittuPaiva;
+
        try {
         valittuPaiva = Integer.parseInt(jTextFieldSyntymaPaiva.getText());
 
@@ -159,7 +154,6 @@ public class PaaIkkuna extends javax.swing.JFrame {
             "Virhe", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Horoskooppi horo = new Horoskooppi("Oinas" ,"2020-03-21", "2020-04-20");
         LocalDate valittuSyntymaPaiva = LocalDate.of(2020, valittuKuukausiInt, valittuPaiva);
         for (Horoskooppi hk : horoskooppiLista) {
             if (hk.onkoHoroskooppi(valittuSyntymaPaiva)) {
@@ -167,8 +161,8 @@ public class PaaIkkuna extends javax.swing.JFrame {
             }
         }
        } catch (Exception e) {
-        System.out.println(e);
-        JOptionPane.showInternalMessageDialog(null, "Vain numeroita syntymäpäivä kenttään kiitos!", "Virhe", JOptionPane.ERROR_MESSAGE);
+            System.out.println(e);
+            JOptionPane.showInternalMessageDialog(null, "Vain numeroita syntymäpäivä kenttään kiitos!", "Virhe", JOptionPane.ERROR_MESSAGE);
        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
