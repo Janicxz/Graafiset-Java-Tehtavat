@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author Jani
@@ -42,54 +45,72 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         public String HaeYritys() {
             return this.YRITYS;
         }
-
-        public Connection luoYhteys() {
-            Connection cn = null;
-            try {
-                String kayttaja = "kehittaja";
-                cn = DriverManager.getConnection("jdbc:mariadb://" + "localhost" + ":3306/ASIAKASTILAUSJARJESTELMA" + "?socketTimeout=2000", kayttaja, "SalaSana123!");
-                return cn;
-            }
-            catch(SQLException ex) {
-                System.out.println("Yhteyden luominen epäonnistui!:\n" + ex.getMessage());
-                ex.printStackTrace();
-                return null;
-            }
-        }
-    
-        public ArrayList<Asiakas> HaeAsiakasTaulukko() {
-            ArrayList<Asiakas> Asiakastaulukko = new ArrayList<Asiakas>();
-
-            Connection yhteys = luoYhteys();
-
-            String query = "SELECT ASIAKASNUMERO, ETUNIMI, SUKUNIMI, YRITYS FROM ASIAKAS";
-            Statement st;
-            ResultSet rs;
-            try {
-                st = yhteys.createStatement();
-                rs = st.executeQuery(query);
-
-                Asiakas as;
-                while (rs.next()) {
-                    as = new Asiakas(rs.getInt("ASIAKASNUMERO"),
-                    rs.getString("ETUNIMI"),
-                    rs.getString("SUKUNIMI"),
-                    rs.getString("YRITYS"));
-                    Asiakastaulukko.add(as);
-                }
-            } catch (SQLException e) {
-                System.out.println("Virhe asiakastaulukon haussa!");
-                e.printStackTrace();
-            }
-            
-            return Asiakastaulukko;
-        }
     }
     /**
      * Creates new form Asiakasrekisterihallinta
      */
     public Asiakasrekisterihallinta() {
         initComponents();
+        NaytaAsiakkaat();
+    }
+    
+    public Connection luoYhteys() {
+        Connection cn = null;
+        try {
+            String kayttaja = "kehittaja";
+            cn = DriverManager.getConnection("jdbc:mariadb://" + "localhost" + ":3306/ASIAKASTILAUSJARJESTELMA" + "?socketTimeout=2000", kayttaja, "SalaSana123!");
+            return cn;
+        }
+        catch(SQLException ex) {
+            System.out.println("Yhteyden luominen epäonnistui!:\n" + ex.getMessage());
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public ArrayList<Asiakas> HaeAsiakasTaulukko() {
+        ArrayList<Asiakas> Asiakastaulukko = new ArrayList<Asiakas>();
+
+        Connection yhteys = luoYhteys();
+
+        String query = "SELECT ASIAKASNUMERO, ETUNIMI, SUKUNIMI, YRITYS FROM ASIAKAS";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = yhteys.createStatement();
+            rs = st.executeQuery(query);
+
+            Asiakas as;
+            while (rs.next()) {
+                as = new Asiakas(rs.getInt("ASIAKASNUMERO"),
+                rs.getString("ETUNIMI"),
+                rs.getString("SUKUNIMI"),
+                rs.getString("YRITYS"));
+                Asiakastaulukko.add(as);
+            }
+        } catch (SQLException e) {
+            System.out.println("Virhe asiakastaulukon haussa!");
+            e.printStackTrace();
+        }
+        return Asiakastaulukko;
+    }
+
+    public void NaytaAsiakkaat() {
+        ArrayList<Asiakas> list = HaeAsiakasTaulukko();
+        DefaultTableModel model = (DefaultTableModel)jtblAsiakkaat.getModel();
+        
+        Object[] row = new Object[4];
+        // Poista entiset rivit
+        for (int i = jtblAsiakkaat.getRowCount() -1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).HaeAsiakasnumero();
+            row[1] = list.get(i).HaeEtunimi();
+            row[2] = list.get(i).HaeSukunimi();
+            row[3] = list.get(i).HaeYritys();
+            model.addRow(row);
+        }
     }
 
     /**
@@ -110,7 +131,7 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         jtxtSukunimi = new javax.swing.JTextField();
         jtxtYritys = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtblAsiakkaat = new javax.swing.JTable();
         jbtnUusi = new javax.swing.JButton();
         jbtnPaivita = new javax.swing.JButton();
         jbtnPoista = new javax.swing.JButton();
@@ -126,7 +147,7 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
 
         jLabel4.setText("Yritys:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtblAsiakkaat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -137,7 +158,12 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                 "Asiakasnumero", "Etunimi", "Sukunimi", "Yritys"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jtblAsiakkaat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtblAsiakkaatMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtblAsiakkaat);
 
         jbtnUusi.setText("Uusi");
 
@@ -210,6 +236,17 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jtblAsiakkaatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblAsiakkaatMouseClicked
+        // Hae valittu rivi
+        int i = jtblAsiakkaat.getSelectedRow();
+        TableModel model = jtblAsiakkaat.getModel();
+        // Päivitä käyttöliittymän tiedot
+        jtxtAsiakasnumero.setText(model.getValueAt(i, 0).toString());
+        jtxtEtunimi.setText(model.getValueAt(i, 1).toString());
+        jtxtSukunimi.setText(model.getValueAt(i, 2).toString());
+        jtxtYritys.setText(model.getValueAt(i, 3).toString());
+    }//GEN-LAST:event_jtblAsiakkaatMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -251,10 +288,10 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnPaivita;
     private javax.swing.JButton jbtnPoista;
     private javax.swing.JButton jbtnUusi;
+    private javax.swing.JTable jtblAsiakkaat;
     private javax.swing.JTextField jtxtAsiakasnumero;
     private javax.swing.JTextField jtxtEtunimi;
     private javax.swing.JTextField jtxtSukunimi;
