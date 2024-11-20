@@ -4,12 +4,87 @@
  */
 package com.jani.asiakasrekisteri;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 /**
  *
  * @author Jani
  */
 public class Asiakasrekisterihallinta extends javax.swing.JFrame {
 
+    class Asiakas {
+        private int ASIAKASNUMERO;
+        private String ETUNIMI;
+        private String SUKUNIMI;
+        private String YRITYS;
+
+        public Asiakas(int id, String etunimi, String sukunimi, String yritys) {
+            this.ASIAKASNUMERO = id;
+            this.ETUNIMI = etunimi;
+            this.SUKUNIMI = sukunimi;
+            this.YRITYS = yritys;
+        }
+
+        public int HaeAsiakasnumero() {
+            return this.ASIAKASNUMERO;
+        }
+        public String HaeEtunimi() {
+            return this.ETUNIMI;
+        }
+        public String HaeSukunimi() {
+            return this.SUKUNIMI;
+        }
+        public String HaeYritys() {
+            return this.YRITYS;
+        }
+
+        public Connection luoYhteys() {
+            Connection cn = null;
+            try {
+                String kayttaja = "kehittaja";
+                cn = DriverManager.getConnection("jdbc:mariadb://" + "localhost" + ":3306/ASIAKASTILAUSJARJESTELMA" + "?socketTimeout=2000", kayttaja, "SalaSana123!");
+                return cn;
+            }
+            catch(SQLException ex) {
+                System.out.println("Yhteyden luominen epäonnistui!:\n" + ex.getMessage());
+                ex.printStackTrace();
+                return null;
+            }
+        }
+    
+        public ArrayList<Asiakas> HaeAsiakasTaulukko() {
+            ArrayList<Asiakas> Asiakastaulukko = new ArrayList<Asiakas>();
+
+            Connection yhteys = luoYhteys();
+
+            String query = "SELECT ASIAKASNUMERO, ETUNIMI, SUKUNIMI, YRITYS FROM ASIAKAS";
+            Statement st;
+            ResultSet rs;
+            try {
+                st = yhteys.createStatement();
+                rs = st.executeQuery(query);
+
+                Asiakas as;
+                while (rs.next()) {
+                    as = new Asiakas(rs.getInt("ASIAKASNUMERO"),
+                    rs.getString("ETUNIMI"),
+                    rs.getString("SUKUNIMI"),
+                    rs.getString("YRITYS"));
+                    Asiakastaulukko.add(as);
+                }
+            } catch (SQLException e) {
+                System.out.println("Virhe asiakastaulukon haussa!");
+                e.printStackTrace();
+            }
+            
+            return Asiakastaulukko;
+        }
+    }
     /**
      * Creates new form Asiakasrekisterihallinta
      */
@@ -26,17 +101,110 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jtxtAsiakasnumero = new javax.swing.JTextField();
+        jtxtEtunimi = new javax.swing.JTextField();
+        jtxtSukunimi = new javax.swing.JTextField();
+        jtxtYritys = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jbtnUusi = new javax.swing.JButton();
+        jbtnPaivita = new javax.swing.JButton();
+        jbtnPoista = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Asiakasrekisteri");
+
+        jLabel1.setText("Asiakasnumero:");
+
+        jLabel2.setText("Etunimi:");
+
+        jLabel3.setText("Sukunimi:");
+
+        jLabel4.setText("Yritys:");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Asiakasnumero", "Etunimi", "Sukunimi", "Yritys"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jbtnUusi.setText("Uusi");
+
+        jbtnPaivita.setText("Päivitä");
+
+        jbtnPoista.setText("Poista");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtxtSukunimi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtEtunimi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtAsiakasnumero, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtYritys, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jbtnUusi)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtnPaivita)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtnPoista)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jtxtAsiakasnumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jtxtEtunimi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jtxtSukunimi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jtxtYritys, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(69, 69, 69)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbtnUusi)
+                            .addComponent(jbtnPaivita)
+                            .addComponent(jbtnPoista)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         pack();
@@ -78,5 +246,18 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtnPaivita;
+    private javax.swing.JButton jbtnPoista;
+    private javax.swing.JButton jbtnUusi;
+    private javax.swing.JTextField jtxtAsiakasnumero;
+    private javax.swing.JTextField jtxtEtunimi;
+    private javax.swing.JTextField jtxtSukunimi;
+    private javax.swing.JTextField jtxtYritys;
     // End of variables declaration//GEN-END:variables
 }
