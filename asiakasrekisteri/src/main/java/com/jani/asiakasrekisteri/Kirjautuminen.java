@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -39,6 +41,11 @@ public class Kirjautuminen extends javax.swing.JFrame {
         }
     }
 
+    private void sulje() {
+        WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,8 +62,9 @@ public class Kirjautuminen extends javax.swing.JFrame {
         jchkNaytaSalasana = new javax.swing.JCheckBox();
         jbtnKirjaudu = new javax.swing.JButton();
         jtxtSalasana = new javax.swing.JPasswordField();
+        jbtnYhteysTesti = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabelTervetuloa.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelTervetuloa.setText("Tervetuloa asiakastilaus-järjestelmään.");
@@ -78,6 +86,13 @@ public class Kirjautuminen extends javax.swing.JFrame {
         jbtnKirjaudu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnKirjauduActionPerformed(evt);
+            }
+        });
+
+        jbtnYhteysTesti.setText("Yhteystesti");
+        jbtnYhteysTesti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnYhteysTestiActionPerformed(evt);
             }
         });
 
@@ -108,6 +123,10 @@ public class Kirjautuminen extends javax.swing.JFrame {
                 .addGap(155, 155, 155)
                 .addComponent(jbtnKirjaudu)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnYhteysTesti)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +144,9 @@ public class Kirjautuminen extends javax.swing.JFrame {
                     .addComponent(jtxtSalasana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(jbtnKirjaudu)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(jbtnYhteysTesti)
+                .addContainerGap())
         );
 
         jLabelTervetuloa.getAccessibleContext().setAccessibleName("jLabelTervetuloa");
@@ -143,6 +164,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
     }//GEN-LAST:event_jchkNaytaSalasanaActionPerformed
 
     private void jbtnKirjauduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnKirjauduActionPerformed
+        // TODO: käsittele annetuilla tunnuksilla
         String tunnus = "HeikkiHuoltohenkilO";//jtxtTunnus.getText();
         String tietokantaSalasana = "";
         char[] tietokantaSalasanaTaulukko = null;
@@ -152,18 +174,24 @@ public class Kirjautuminen extends javax.swing.JFrame {
         
         Connection cn = luoYhteys();
         
-        String sqlKysely = "SELECT TUNNUS, DES_DECRYPT(?, 'salainenavain') AS SALASANA FROM KAYTTAJA WHERE TUNNUS = ?";
+        // Tätä ei kuuluisi tehdä käyttäjän puolella, nyt lataamme kenen tahansa salasanan muistiin.
+        String sqlKysely = "SELECT TUNNUS, DES_DECRYPT(kayttaja.SALASANA, 'salainenavain') AS SALASANA FROM KAYTTAJA WHERE TUNNUS = ?";
         try {
             PreparedStatement stm = cn.prepareStatement(sqlKysely);
-            stm.setString(1, annettuSalasana.toString());
-            stm.setString(2, tunnus);
+            //stm.setString(1, annettuSalasana.toString());
+            stm.setString(1, tunnus);
             ResultSet tulos = stm.executeQuery();
 
             // Jos tulos.next, tunnus on oikein.
             if(tulos.next()) {
                 tietokantaSalasana = tulos.getString("SALASANA").trim();
                 tietokantaSalasanaTaulukko = tietokantaSalasana.toCharArray();
-                if(Arrays.equals(tietokantaSalasanaTaulukko, annettuSalasana))
+                if(Arrays.equals(tietokantaSalasanaTaulukko, annettuSalasana)) {
+                    PaaKayttoliittyma GUI = new PaaKayttoliittyma(tunnus);
+                    GUI.setVisible(true);
+                    System.out.println("Käynnistetään pääkäyttöliittymä.");
+                    sulje();
+                }
             }       
             else {
                 JOptionPane.showMessageDialog(this, "Tunnus tai salasana on väärin. Yritä uudelleen.");
@@ -172,7 +200,42 @@ public class Kirjautuminen extends javax.swing.JFrame {
         catch(SQLException ex) {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // Poista salasanat muistista
+        Arrays.fill(tietokantaSalasanaTaulukko, '0');
+        Arrays.fill(annettuSalasana, '0');
+        tietokantaSalasana = "";
+
+
     }//GEN-LAST:event_jbtnKirjauduActionPerformed
+
+    private void jbtnYhteysTestiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnYhteysTestiActionPerformed
+        try {
+            Class.forName("org.mariadb.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Missä on MariaDB JDBC ajuri? Oletko ladannut mariadb connectorin osoitteesta:" +
+"https://mariadb.com/downloads/#connectors ja lisännyt sen Netbeansissä Asiakasrekisteri-Libraries-Add" +
+"JAR/Folder kohdassa?");
+            e.printStackTrace();
+            return;
+        }
+        System.out.println("Mariadb JDBC Driver rekisteröity!");
+        Connection cn = null;
+        try {
+            String kayttaja = "kehittaja";
+            cn = DriverManager.getConnection("jdbc:mariadb://" + "localhost" + ":3306/ASIAKASTILAUSJARJESTELMA" + "?socketTimeout=2000", kayttaja, "SalaSana123!");
+        }
+        catch(SQLException ex) {
+            System.out.println("Yhteyden luominen epäonnistui!:\n" + ex.getMessage());
+            ex.printStackTrace();
+            return;
+        }
+        if (cn != null) {
+            System.out.println("Tietokantayhteys toimii.");
+        }
+        else {
+            System.out.println("Tietokantayhteyttä ei muodostettu.");
+        }
+    }//GEN-LAST:event_jbtnYhteysTestiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,6 +278,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTervetuloa;
     private javax.swing.JLabel jLabelTunnus;
     private javax.swing.JButton jbtnKirjaudu;
+    private javax.swing.JButton jbtnYhteysTesti;
     private javax.swing.JCheckBox jchkNaytaSalasana;
     private javax.swing.JPasswordField jtxtSalasana;
     private javax.swing.JTextField jtxtTunnus;
