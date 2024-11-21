@@ -138,11 +138,16 @@
         <Component class="javax.swing.JTable" name="jtblAsiakkaat">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
+              <Table columnCount="9" rowCount="4">
                 <Column editable="true" title="Asiakasnumero" type="java.lang.Object"/>
                 <Column editable="true" title="Etunimi" type="java.lang.Object"/>
                 <Column editable="true" title="Sukunimi" type="java.lang.Object"/>
                 <Column editable="true" title="Yritys" type="java.lang.Object"/>
+                <Column editable="true" title="Katuosoite" type="java.lang.Object"/>
+                <Column editable="true" title="Postinumero" type="java.lang.Object"/>
+                <Column editable="true" title="Postitoimipaikka" type="java.lang.Object"/>
+                <Column editable="true" title="Puhelin" type="java.lang.Object"/>
+                <Column editable="true" title="Email" type="java.lang.Object"/>
               </Table>
             </Property>
           </Properties>
@@ -156,16 +161,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Uusi"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnUusiActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnPaivita">
       <Properties>
         <Property name="text" type="java.lang.String" value="P&#xe4;ivit&#xe4;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnPaivitaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnPoista">
       <Properties>
         <Property name="text" type="java.lang.String" value="Poista"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnPoistaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
