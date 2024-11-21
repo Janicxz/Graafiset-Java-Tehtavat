@@ -80,9 +80,13 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
      */
     public Asiakasrekisterihallinta() {
         initComponents();
+        // Lataa asiakastiedot tietokannasta
         NaytaAsiakkaat();
     }
-    
+    /**
+     * Luo uusi MySQL yhteys asiakastietokantaan ja palauta Connection
+     * @return Palauttaa Connection olion tietokantaan, jos yhteys epäonnistui palauttaa Null.
+     */
     public Connection luoYhteys() {
         Connection cn = null;
         try {
@@ -96,7 +100,10 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             return null;
         }
     }
-
+    /**
+     * Yhdistää asiakastietokantaan ja palauttaa Asiakastaulukon, ei palauta mitään virheen sattuessa
+     * @return Palauttaa ArrayList<Asiakas> taulukon asiakastietokannasta
+     */
     public ArrayList<Asiakas> HaeAsiakasTaulukko() {
         ArrayList<Asiakas> Asiakastaulukko = new ArrayList<Asiakas>();
 
@@ -130,7 +137,9 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         }
         return Asiakastaulukko;
     }
-
+    /**
+     * Hakee uuden asiakaslistan ja päivittää tiedot asiakas UI-taulukkoon
+     */
     public void NaytaAsiakkaat() {
         ArrayList<Asiakas> list = HaeAsiakasTaulukko();
         DefaultTableModel model = (DefaultTableModel)jtblAsiakkaat.getModel();
@@ -153,7 +162,9 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             model.addRow(row);
         }
     }
-
+    /*
+     * Suorittaa annetun SQL kyselyn ja näyttää viestin käyttäjälle
+     */
     public void suoritaSQLKysely(String query, String message) {
         Connection yhteys = luoYhteys();
         Statement st;
@@ -175,7 +186,9 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    /*
+     * Tarkistaa onko asiakas tekstikentät täytetty oikein ja palauttaa True, jos löytyy tyhjiä palauttaa False.
+     */
     private boolean onkoAsiakastiedotTaytetty() {
         if (jtxtEtunimi.getText().equals("") || jtxtSukunimi.getText().equals("") || jtxtYritys.getText().equals("") 
         || jtxtKatuosoite.getText().equals("") || jtxtKatuosoite.getText().equals("")
@@ -394,10 +407,10 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtblAsiakkaatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblAsiakkaatMouseClicked
-        // Hae valittu rivi
+        // Päivitä käyttöliittymään valitun asiakkaan tiedot
         int i = jtblAsiakkaat.getSelectedRow();
         TableModel model = jtblAsiakkaat.getModel();
-        // Päivitä käyttöliittymän tiedot
+
         jtxtAsiakasnumero.setText(model.getValueAt(i, 0).toString());
         jtxtEtunimi.setText(model.getValueAt(i, 1).toString());
         jtxtSukunimi.setText(model.getValueAt(i, 2).toString());
@@ -446,9 +459,8 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnPaivitaActionPerformed
 
     private void jbtnPoistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnPoistaActionPerformed
-
-        // TODO: PreparedStatement
         // Poista valittu asiakas tietokannasta.
+        // TODO: PreparedStatement
         if (JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa asiakkaan " + "(" + jtxtAsiakasnumero.getText() + ") " + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + "?", "Poista", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
             String query = "DELETE FROM ASIAKAS WHERE ASIAKASNUMERO=" + jtxtAsiakasnumero.getText();
             suoritaSQLKysely(query, "poistettu");
