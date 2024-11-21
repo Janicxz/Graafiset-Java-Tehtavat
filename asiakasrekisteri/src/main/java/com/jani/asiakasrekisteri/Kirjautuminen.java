@@ -26,7 +26,10 @@ public class Kirjautuminen extends javax.swing.JFrame {
     public Kirjautuminen() {
         initComponents();
     }
-    
+    /**
+     * Luo uusi yhteys asiakastietokantaan ja palauta se, palauttaa null virheen sattuessa.
+     * @return 
+     */
     public Connection luoYhteys() {
         Connection cn = null;
         try {
@@ -40,7 +43,9 @@ public class Kirjautuminen extends javax.swing.JFrame {
             return null;
         }
     }
-
+    /**
+     * Sulje tämä ikkuna
+     */
     private void sulje() {
         WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
@@ -153,7 +158,10 @@ public class Kirjautuminen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Näytä tai piilota salasana tekstikentän sisältö
+     * @param evt 
+     */
     private void jchkNaytaSalasanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkNaytaSalasanaActionPerformed
         if (jchkNaytaSalasana.isSelected()) {
             jtxtSalasana.setEchoChar((char)0);
@@ -162,15 +170,18 @@ public class Kirjautuminen extends javax.swing.JFrame {
             jtxtSalasana.setEchoChar('*');
         }
     }//GEN-LAST:event_jchkNaytaSalasanaActionPerformed
-
+    /**
+     * Kirjaudu sisään asiakastietokantaan annetulla tunnuksella ja salasanalla
+     * @param evt 
+     */
     private void jbtnKirjauduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnKirjauduActionPerformed
         // TODO: käsittele annetuilla tunnuksilla
-        String tunnus = "HeikkiHuoltohenkilO";//jtxtTunnus.getText();
+        String tunnus = jtxtTunnus.getText();
         String tietokantaSalasana = "";
         char[] tietokantaSalasanaTaulukko = null;
         // Salasana käsitellään char taulukkona jotta voimme hävittää sen muistista heti käytön jälkeen.
         // String muuttujana GC päättää milloin se poistetaan ohjelman muistista.
-        char[] annettuSalasana = "KiSsa123#!".toCharArray();//jtxtSalasana.getPassword();
+        char[] annettuSalasana = jtxtSalasana.getPassword();
         
         Connection cn = luoYhteys();
         

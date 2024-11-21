@@ -259,6 +259,11 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                 jtblAsiakkaatMouseClicked(evt);
             }
         });
+        jtblAsiakkaat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtblAsiakkaatKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtblAsiakkaat);
 
         jbtnUusi.setText("Uusi");
@@ -405,9 +410,10 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jtblAsiakkaatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblAsiakkaatMouseClicked
-        // Päivitä käyttöliittymään valitun asiakkaan tiedot
+    /**
+     * 
+     */
+    private void paivitaValittuAsiakasTaulukkoUI() {
         int i = jtblAsiakkaat.getSelectedRow();
         TableModel model = jtblAsiakkaat.getModel();
 
@@ -420,6 +426,11 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         jtxtPostitoimipaikka.setText(model.getValueAt(i, 6).toString());
         jtxtPuhelin.setText(model.getValueAt(i, 7).toString());
         jtxtEmail.setText(model.getValueAt(i, 8).toString());
+    }
+
+    private void jtblAsiakkaatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblAsiakkaatMouseClicked
+        // Päivitä käyttöliittymään valitun asiakkaan tiedot
+        paivitaValittuAsiakasTaulukkoUI();
     }//GEN-LAST:event_jtblAsiakkaatMouseClicked
 
     private void jbtnUusiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUusiActionPerformed
@@ -435,7 +446,10 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(null, "Haluatko lisätä uuden asiakkaan " + "(" + jtxtAsiakasnumero.getText() + ") "  + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + "?", "Lisää", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
             String query = "INSERT INTO `ASIAKAS`(`ASIAKKAAKSITULOPAIVA`, `YRITYS`, `ETUNIMI`, `SUKUNIMI`, `KATUOSOITE`, `POSTINUMERO`, `POSTITOIMIPAIKKA`, `PUHELIN`, `EMAIL`)";
             query += " VALUES('" + dateFormat.format(tamaPaiva) + "','" + jtxtYritys.getText() + "','" + jtxtEtunimi.getText() + "','" + 
-                        jtxtSukunimi.getText() + "', '', '', '', '', '')";
+                        jtxtSukunimi.getText() + "','" + jtxtKatuosoite.getText() +
+                        "','" + jtxtPostinumero.getText() + "','"
+                         + jtxtPostitoimipaikka.getText() + "','"
+                         + jtxtPuhelin.getText() + "','" + jtxtEmail.getText() + "')";
             System.out.println(query);
             suoritaSQLKysely(query, "lisätty");
         }
@@ -453,6 +467,11 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             String query = "UPDATE `ASIAKAS` SET ETUNIMI='" + jtxtEtunimi.getText() +
             "', SUKUNIMI='" + jtxtSukunimi.getText() +
             "', YRITYS='" + jtxtYritys.getText() +
+            "', KATUOSOITE='" + jtxtKatuosoite.getText() +
+            "', POSTINUMERO='" + jtxtPostinumero.getText() +
+            "', POSTITOIMIPAIKKA='" + jtxtPostitoimipaikka.getText() +
+            "', PUHELIN='" + jtxtPuhelin.getText() +
+            "', EMAIL='" + jtxtEmail.getText() +
             "' WHERE ASIAKASNUMERO=" + jtxtAsiakasnumero.getText();
             suoritaSQLKysely(query, "päivitetty");
         }
@@ -471,6 +490,13 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     private void jtxtPostinumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtPostinumeroActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtPostinumeroActionPerformed
+
+    private void jtblAsiakkaatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtblAsiakkaatKeyPressed
+        // TODO: 
+        /*if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_UP || evt.getKeyCode() == java.awt.event.KeyEvent.VK_DOWN) {
+            paivitaValittuAsiakasTaulukkoUI();
+        }*/
+    }//GEN-LAST:event_jtblAsiakkaatKeyPressed
 
     /**
      * @param args the command line arguments
