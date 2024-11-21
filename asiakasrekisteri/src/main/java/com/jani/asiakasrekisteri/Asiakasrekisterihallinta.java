@@ -176,6 +176,16 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         }
     }
 
+    private boolean onkoAsiakastiedotTaytetty() {
+        if (jtxtEtunimi.getText().equals("") || jtxtSukunimi.getText().equals("") || jtxtYritys.getText().equals("") 
+        || jtxtKatuosoite.getText().equals("") || jtxtKatuosoite.getText().equals("")
+        || jtxtPostinumero.getText().equals("") || jtxtPostitoimipaikka.getText().equals("") ||
+        jtxtPuhelin.getText().equals("") || jtxtEmail.getText().equals("")) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,6 +208,16 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         jbtnUusi = new javax.swing.JButton();
         jbtnPaivita = new javax.swing.JButton();
         jbtnPoista = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jtxtKatuosoite = new javax.swing.JTextField();
+        jtxtPostinumero = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jtxtPostitoimipaikka = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jtxtPuhelin = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jtxtEmail = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Asiakasrekisteri");
@@ -249,6 +269,22 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Katuosoite:");
+
+        jtxtPostinumero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxtPostinumeroActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Postinumero:");
+
+        jLabel7.setText("Postitoimipaikka:");
+
+        jLabel8.setText("Puhelin:");
+
+        jLabel9.setText("Email:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -256,32 +292,54 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtxtSukunimi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtxtEtunimi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtxtAsiakasnumero, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtxtYritys, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jbtnUusi)
                         .addGap(18, 18, 18)
                         .addComponent(jbtnPaivita)
                         .addGap(18, 18, 18)
-                        .addComponent(jbtnPoista)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+                        .addComponent(jbtnPoista))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtxtKatuosoite, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtxtSukunimi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtxtEtunimi, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtxtAsiakasnumero, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtxtYritys, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtxtPostinumero, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtxtPostitoimipaikka, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtxtPuhelin, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
@@ -300,15 +358,36 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jtxtYritys, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(69, 69, 69)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jbtnUusi)
-                            .addComponent(jbtnPaivita)
-                            .addComponent(jbtnPoista)))
+                            .addComponent(jtxtKatuosoite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtxtPostinumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtxtPostitoimipaikka, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtxtPuhelin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addGap(32, 32, 32))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(134, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnUusi)
+                    .addComponent(jbtnPaivita)
+                    .addComponent(jbtnPoista))
+                .addGap(88, 88, 88))
         );
 
         pack();
@@ -323,13 +402,24 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         jtxtEtunimi.setText(model.getValueAt(i, 1).toString());
         jtxtSukunimi.setText(model.getValueAt(i, 2).toString());
         jtxtYritys.setText(model.getValueAt(i, 3).toString());
+        jtxtKatuosoite.setText(model.getValueAt(i, 4).toString());
+        jtxtPostinumero.setText(model.getValueAt(i, 5).toString());
+        jtxtPostitoimipaikka.setText(model.getValueAt(i, 6).toString());
+        jtxtPuhelin.setText(model.getValueAt(i, 7).toString());
+        jtxtEmail.setText(model.getValueAt(i, 8).toString());
     }//GEN-LAST:event_jtblAsiakkaatMouseClicked
 
     private void jbtnUusiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUusiActionPerformed
+        // Lisää uusi asiakas tietokantaan.
+        if (!onkoAsiakastiedotTaytetty()) {
+            JOptionPane.showInternalMessageDialog(null, "Virhe lisättäessä uutta asiakasta!\n Jokin tekstikenttä on tyhjä!", "Virhe", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date tamaPaiva = new Date();
         // TODO: PreparedStatement
-        if (JOptionPane.showConfirmDialog(null, "Haluatko lisätä uuden asiakkaan " + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + "?", "Lisää", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+        if (JOptionPane.showConfirmDialog(null, "Haluatko lisätä uuden asiakkaan " + "(" + jtxtAsiakasnumero.getText() + ") "  + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + "?", "Lisää", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
             String query = "INSERT INTO `ASIAKAS`(`ASIAKKAAKSITULOPAIVA`, `YRITYS`, `ETUNIMI`, `SUKUNIMI`, `KATUOSOITE`, `POSTINUMERO`, `POSTITOIMIPAIKKA`, `PUHELIN`, `EMAIL`)";
             query += " VALUES('" + dateFormat.format(tamaPaiva) + "','" + jtxtYritys.getText() + "','" + jtxtEtunimi.getText() + "','" + 
                         jtxtSukunimi.getText() + "', '', '', '', '', '')";
@@ -339,24 +429,36 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnUusiActionPerformed
 
     private void jbtnPaivitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnPaivitaActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Haluatko päivittää asiakkaan " + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + " tiedot?", "Päivitä", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+        // Päivitä valitun asiakkaan tiedot.
+        if (!onkoAsiakastiedotTaytetty()) {
+            JOptionPane.showInternalMessageDialog(null, "Virhe päivitettäessä asiakkaan tietoja!\n Jokin tekstikenttä on tyhjä!", "Virhe", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (JOptionPane.showConfirmDialog(null, "Haluatko päivittää asiakkaan " + "(" + jtxtAsiakasnumero.getText() + ") "  + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + " tiedot?", "Päivitä", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
             // TODO: PreparedStatement
-            String query = "UPDATE `ASIAKAS` SET ETUNIMI='" + jtxtEtunimi.getText() + 
-            "', SUKUNIMI='" + jtxtSukunimi.getText() + 
-            "', YRITYS='" + jtxtYritys.getText() + 
+            String query = "UPDATE `ASIAKAS` SET ETUNIMI='" + jtxtEtunimi.getText() +
+            "', SUKUNIMI='" + jtxtSukunimi.getText() +
+            "', YRITYS='" + jtxtYritys.getText() +
             "' WHERE ASIAKASNUMERO=" + jtxtAsiakasnumero.getText();
             suoritaSQLKysely(query, "päivitetty");
         }
     }//GEN-LAST:event_jbtnPaivitaActionPerformed
 
     private void jbtnPoistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnPoistaActionPerformed
+
         // TODO: PreparedStatement
-        if (JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa asiakkaan " + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + "?", "Poista", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+        // Poista valittu asiakas tietokannasta.
+        if (JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa asiakkaan " + "(" + jtxtAsiakasnumero.getText() + ") " + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + "?", "Poista", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
             String query = "DELETE FROM ASIAKAS WHERE ASIAKASNUMERO=" + jtxtAsiakasnumero.getText();
             suoritaSQLKysely(query, "poistettu");
         }
 
     }//GEN-LAST:event_jbtnPoistaActionPerformed
+
+    private void jtxtPostinumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtPostinumeroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtPostinumeroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -398,13 +500,23 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtnPaivita;
     private javax.swing.JButton jbtnPoista;
     private javax.swing.JButton jbtnUusi;
     private javax.swing.JTable jtblAsiakkaat;
     private javax.swing.JTextField jtxtAsiakasnumero;
+    private javax.swing.JTextField jtxtEmail;
     private javax.swing.JTextField jtxtEtunimi;
+    private javax.swing.JTextField jtxtKatuosoite;
+    private javax.swing.JTextField jtxtPostinumero;
+    private javax.swing.JTextField jtxtPostitoimipaikka;
+    private javax.swing.JTextField jtxtPuhelin;
     private javax.swing.JTextField jtxtSukunimi;
     private javax.swing.JTextField jtxtYritys;
     // End of variables declaration//GEN-END:variables
