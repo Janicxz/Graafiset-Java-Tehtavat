@@ -159,7 +159,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     /**
-     * Näytä tai piilota salasana tekstikentän sisältö
+     * Näytä tai piilota salasana-tekstikentän sisältö
      * @param evt 
      */
     private void jchkNaytaSalasanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkNaytaSalasanaActionPerformed
@@ -212,8 +212,12 @@ public class Kirjautuminen extends javax.swing.JFrame {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Poista salasanat muistista
-        Arrays.fill(tietokantaSalasanaTaulukko, '0');
-        Arrays.fill(annettuSalasana, '0');
+        if (tietokantaSalasanaTaulukko != null) { 
+            Arrays.fill(tietokantaSalasanaTaulukko, '0');
+        }
+        if (annettuSalasana != null) {
+            Arrays.fill(annettuSalasana, '0');
+        }
         tietokantaSalasana = "";
 
 
