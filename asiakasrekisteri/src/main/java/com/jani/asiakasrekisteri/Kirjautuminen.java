@@ -27,8 +27,8 @@ public class Kirjautuminen extends javax.swing.JFrame {
         initComponents();
     }
     /**
-     * Luo uusi yhteys asiakastietokantaan ja palauta se, palauttaa null virheen sattuessa.
-     * @return 
+     * Luo uusi MySQL yhteys asiakastietokantaan ja palauta Connection
+     * @return Palauttaa asiakastietokantaan yhdistetyn Connection olion, jos yhteyden muodostaminen epäonnistui palauttaa null.
      */
     public Connection luoYhteys() {
         Connection cn = null;
@@ -44,7 +44,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
         }
     }
     /**
-     * Sulje tämä ikkuna
+     * Sulje kirjautumisikkuna
      */
     private void sulje() {
         WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -160,7 +160,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     /**
      * Näytä tai piilota salasana-tekstikentän sisältö
-     * @param evt 
+     * 
      */
     private void jchkNaytaSalasanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkNaytaSalasanaActionPerformed
         if (jchkNaytaSalasana.isSelected()) {
@@ -172,7 +172,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
     }//GEN-LAST:event_jchkNaytaSalasanaActionPerformed
     /**
      * Kirjaudu sisään asiakastietokantaan annetulla tunnuksella ja salasanalla
-     * @param evt 
+     *
      */
     private void jbtnKirjauduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnKirjauduActionPerformed
         // TODO: käsittele annetuilla tunnuksilla
@@ -182,9 +182,9 @@ public class Kirjautuminen extends javax.swing.JFrame {
         // Salasana käsitellään char taulukkona jotta voimme hävittää sen muistista heti käytön jälkeen.
         // String muuttujana GC päättää milloin se poistetaan ohjelman muistista.
         char[] annettuSalasana = jtxtSalasana.getPassword();
-        
+
         Connection cn = luoYhteys();
-        
+
         // Tätä ei kuuluisi tehdä käyttäjän puolella, nyt lataamme kenen tahansa salasanan muistiin.
         String sqlKysely = "SELECT TUNNUS, DES_DECRYPT(kayttaja.SALASANA, 'salainenavain') AS SALASANA FROM KAYTTAJA WHERE TUNNUS = ?";
         try {
@@ -203,7 +203,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
                     System.out.println("Käynnistetään pääkäyttöliittymä.");
                     sulje();
                 }
-            }       
+            }
             else {
                 JOptionPane.showMessageDialog(this, "Tunnus tai salasana on väärin. Yritä uudelleen.");
             }
@@ -212,7 +212,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Poista salasanat muistista
-        if (tietokantaSalasanaTaulukko != null) { 
+        if (tietokantaSalasanaTaulukko != null) {
             Arrays.fill(tietokantaSalasanaTaulukko, '0');
         }
         if (annettuSalasana != null) {
@@ -224,6 +224,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnKirjauduActionPerformed
 
     private void jbtnYhteysTestiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnYhteysTestiActionPerformed
+        // Testaa toimiiko tietokantayhteys
         try {
             Class.forName("org.mariadb.jdbc.Driver");
         } catch (ClassNotFoundException e) {

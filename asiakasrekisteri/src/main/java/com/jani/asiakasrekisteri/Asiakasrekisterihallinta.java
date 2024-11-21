@@ -23,7 +23,10 @@ import javax.swing.table.TableModel;
  * @author Jani
  */
 public class Asiakasrekisterihallinta extends javax.swing.JFrame {
-
+    /**
+     * Asiakas luokka, käytetään Asiakaslistan täyttämisessä
+     * Sisältää kaikki asiakkaan liittyvät tiedot joita käsitellään asiakastietokannassa
+     */
     class Asiakas {
         private int ASIAKASNUMERO;
         private String ETUNIMI;
@@ -85,7 +88,7 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     }
     /**
      * Luo uusi MySQL yhteys asiakastietokantaan ja palauta Connection
-     * @return Palauttaa Connection olion tietokantaan, jos yhteys epäonnistui palauttaa Null.
+     * @return Palauttaa asiakastietokantaan yhdistetyn Connection olion, jos yhteyden muodostaminen epäonnistui palauttaa null.
      */
     public Connection luoYhteys() {
         Connection cn = null;
@@ -138,7 +141,7 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         return Asiakastaulukko;
     }
     /**
-     * Hakee uuden asiakaslistan ja päivittää tiedot asiakas UI-taulukkoon
+     * Hakee uuden asiakaslistan tietokannasta ja täyttää asiakastaulukon
      */
     public void NaytaAsiakkaat() {
         ArrayList<Asiakas> list = HaeAsiakasTaulukko();
@@ -162,8 +165,10 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             model.addRow(row);
         }
     }
-    /*
-     * Suorittaa annetun SQL kyselyn ja näyttää viestin käyttäjälle
+    /**
+     * Suorittaa annetun kyselyn ja näyttää viestin käyttäjälle
+     * @param query suoritettava SQL-kysely
+     * @param message käyttäjälle näytettävä viesti kyselyn jälkeen
      */
     public void suoritaSQLKysely(String query, String message) {
         Connection yhteys = luoYhteys();
@@ -186,8 +191,9 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    /*
-     * Tarkistaa onko asiakas tekstikentät täytetty oikein ja palauttaa True, jos löytyy tyhjiä palauttaa False.
+    /**
+     * Tarkistaa onko kaikki asiakas tekstikentät täytetty
+     * @return Palauttaa true mikäli asiakastiedot täytetty asianmukaisesti, false muulloin.
      */
     private boolean onkoAsiakastiedotTaytetty() {
         if (jtxtEtunimi.getText().equals("") || jtxtSukunimi.getText().equals("") || jtxtYritys.getText().equals("") 
