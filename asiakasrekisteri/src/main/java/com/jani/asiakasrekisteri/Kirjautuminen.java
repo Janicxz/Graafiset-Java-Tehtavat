@@ -188,6 +188,7 @@ public class Kirjautuminen extends javax.swing.JFrame {
         // Tätä ei kuuluisi tehdä käyttäjän puolella, nyt lataamme kenen tahansa salasanan muistiin.
         String sqlKysely = "SELECT TUNNUS, DES_DECRYPT(kayttaja.SALASANA, 'salainenavain') AS SALASANA FROM KAYTTAJA WHERE TUNNUS = ?";
         try {
+            boolean tunnusTaiSalasanaVaarin = true;
             PreparedStatement stm = cn.prepareStatement(sqlKysely);
             //stm.setString(1, annettuSalasana.toString());
             stm.setString(1, tunnus);
@@ -198,13 +199,14 @@ public class Kirjautuminen extends javax.swing.JFrame {
                 tietokantaSalasana = tulos.getString("SALASANA").trim();
                 tietokantaSalasanaTaulukko = tietokantaSalasana.toCharArray();
                 if(Arrays.equals(tietokantaSalasanaTaulukko, annettuSalasana)) {
+                    tunnusTaiSalasanaVaarin = false;
                     PaaKayttoliittyma GUI = new PaaKayttoliittyma(tunnus);
                     GUI.setVisible(true);
                     System.out.println("Käynnistetään pääkäyttöliittymä.");
                     sulje();
                 }
             }
-            else {
+            if (tunnusTaiSalasanaVaarin) {
                 JOptionPane.showMessageDialog(this, "Tunnus tai salasana on väärin. Yritä uudelleen.");
             }
         }
