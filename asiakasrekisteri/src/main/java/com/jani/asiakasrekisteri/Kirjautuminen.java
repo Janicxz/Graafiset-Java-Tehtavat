@@ -248,9 +248,11 @@ public class Kirjautuminen extends javax.swing.JFrame {
             return;
         }
         if (cn != null) {
+            JOptionPane.showMessageDialog(this, "Yhteys toimii.");
             System.out.println("Tietokantayhteys toimii.");
         }
         else {
+            JOptionPane.showMessageDialog(this, "Yhteyden luominen epäonnistui!");
             System.out.println("Tietokantayhteyttä ei muodostettu.");
         }
     }//GEN-LAST:event_jbtnYhteysTestiActionPerformed
