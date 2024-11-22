@@ -148,7 +148,7 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     public void NaytaAsiakkaat() {
         ArrayList<Asiakas> list = HaeAsiakasTaulukko();
         DefaultTableModel model = (DefaultTableModel)jtblAsiakkaat.getModel();
-        
+
         Object[] row = new Object[9];
         // Poista entiset rivit
         for (int i = jtblAsiakkaat.getRowCount() -1; i >= 0; i--) {
@@ -201,6 +201,7 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
     public void suoritaSQLKysely(String query, String message) {
         Connection yhteys = luoYhteys();
         Statement st;
+
         try {
             st = yhteys.createStatement();
             if(st.executeUpdate(query) == 1) {
@@ -476,19 +477,11 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date tamaPaiva = new Date();
-        // TODO: PreparedStatement
         if (JOptionPane.showConfirmDialog(null, "Haluatko lisätä uuden asiakkaan " + "(" + jtxtAsiakasnumero.getText() + ") "  + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + "?", "Lisää", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-            String query = "INSERT INTO `ASIAKAS`(`ASIAKKAAKSITULOPAIVA`, `YRITYS`, `ETUNIMI`, `SUKUNIMI`, `KATUOSOITE`, `POSTINUMERO`, `POSTITOIMIPAIKKA`, `PUHELIN`, `EMAIL`)";
-            query += " VALUES('" + dateFormat.format(tamaPaiva) + "','" + jtxtYritys.getText() + "','" + jtxtEtunimi.getText() + "','" +
-                        jtxtSukunimi.getText() + "','" + jtxtKatuosoite.getText() +
-                        "','" + jtxtPostinumero.getText() + "','"
-                         + jtxtPostitoimipaikka.getText() + "','"
-                         + jtxtPuhelin.getText() + "','" + jtxtEmail.getText() + "')";
-            //System.out.println(query);
             try {
-                Connection yhteys = luoYhteys();
                 String kysely = "INSERT INTO `ASIAKAS`(`ASIAKKAAKSITULOPAIVA`, `YRITYS`, `ETUNIMI`, `SUKUNIMI`, `KATUOSOITE`, `POSTINUMERO`, `POSTITOIMIPAIKKA`, `PUHELIN`, `EMAIL`) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                Connection yhteys = luoYhteys();
                 PreparedStatement st = yhteys.prepareStatement(kysely);
                 st.setDate(1, java.sql.Date.valueOf(dateFormat.format(tamaPaiva)));
                 st.setString(2, jtxtYritys.getText());
@@ -504,7 +497,6 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                 JOptionPane.showInternalMessageDialog(null, "Asiakkaan lisäys epäonnistui");
                 e.printStackTrace();
             }
-            //suoritaSQLKysely(query, "lisätty");
         }
     }//GEN-LAST:event_jbtnUusiActionPerformed
 
@@ -516,11 +508,10 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         }
         
         if (JOptionPane.showConfirmDialog(null, "Haluatko päivittää asiakkaan " + "(" + jtxtAsiakasnumero.getText() + ") "  + jtxtEtunimi.getText() + " " + jtxtSukunimi.getText() + " tiedot?", "Päivitä", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-            // TODO: PreparedStatement
-            Connection yhteys = luoYhteys();
-            String kysely = "UPDATE ASIAKAS SET ETUNIMI=?, SUKUNIMI=?, YRITYS=?, KATUOSOITE=?, POSTINUMERO=?, POSTITOIMIPAIKKA=?" +
-            ", PUHELIN=?, EMAIL=? WHERE ASIAKASNUMERO=?";
             try {
+                String kysely = "UPDATE ASIAKAS SET ETUNIMI=?, SUKUNIMI=?, YRITYS=?, KATUOSOITE=?, POSTINUMERO=?, POSTITOIMIPAIKKA=?" +
+                ", PUHELIN=?, EMAIL=? WHERE ASIAKASNUMERO=?";
+                Connection yhteys = luoYhteys();
                 PreparedStatement st = yhteys.prepareStatement(kysely);
                 st.setString(1, jtxtEtunimi.getText());
                 st.setString(2, jtxtSukunimi.getText());
@@ -536,18 +527,6 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                 JOptionPane.showInternalMessageDialog(null, "Asiakkaan tietojen päivitys epäonnistui");
                 e.printStackTrace();
             }
-
-
-            /*String query = "UPDATE `ASIAKAS` SET ETUNIMI='" + jtxtEtunimi.getText() +
-            "', SUKUNIMI='" + jtxtSukunimi.getText() +
-            "', YRITYS='" + jtxtYritys.getText() +
-            "', KATUOSOITE='" + jtxtKatuosoite.getText() +
-            "', POSTINUMERO='" + jtxtPostinumero.getText() +
-            "', POSTITOIMIPAIKKA='" + jtxtPostitoimipaikka.getText() +
-            "', PUHELIN='" + jtxtPuhelin.getText() +
-            "', EMAIL='" + jtxtEmail.getText() +
-            "' WHERE ASIAKASNUMERO=" + jtxtAsiakasnumero.getText();
-            suoritaSQLKysely(query, "päivitetty");*/
         }
     }//GEN-LAST:event_jbtnPaivitaActionPerformed
 
@@ -565,15 +544,12 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                 JOptionPane.showInternalMessageDialog(null, "Asiakkaan poistaminen epäonnistui");
                 e.printStackTrace();
             }
-            
-            /*String query = "DELETE FROM ASIAKAS WHERE ASIAKASNUMERO=" + jtxtAsiakasnumero.getText();
-            suoritaSQLKysely(query, "poistettu");*/
         }
 
     }//GEN-LAST:event_jbtnPoistaActionPerformed
 
     private void jtxtPostinumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtPostinumeroActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jtxtPostinumeroActionPerformed
 
     private void jtblAsiakkaatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtblAsiakkaatKeyPressed
