@@ -17,7 +17,7 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+//import javax.swing.table.TableModel;
 
 /**
  *
@@ -65,6 +65,11 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
          * @param email
          */
         public void PaivitaAsiakasTiedot(String asiakkaaksiTulopaiva, String etunimi, String sukunimi, String yritys, String katuosoite, String postinumero, String postitoimipaikka, String puhelin, String email) {
+            // Ei päivitetä tietoja mikäli tietokanta kysely epäonnistui
+            if (!this._paivitaAsiakastiedotSQL()) {
+                return;
+            }
+            
             this.ASIAKKAAKSITULOPAIVA = asiakkaaksiTulopaiva;
             this.ETUNIMI = etunimi;
             this.SUKUNIMI = sukunimi;
@@ -74,8 +79,6 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
             this.POSTITOIMIPAIKKA = postitoimipaikka;
             this.PUHELIN = puhelin;
             this.EMAIL = email;
-
-            this._paivitaAsiakastiedotSQL();
         }
         /**
          * Poistaa tämän asiakkaan tietokannasta
@@ -93,8 +96,11 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-
-        private void _paivitaAsiakastiedotSQL() {
+        /**
+         * Päivittää tämän asiakkaan tiedot tietokantaan, palauttaa true jos onnistui, false muulloin.
+         * @return True jos päivitys onnistui. False jos ei.
+         */
+        private boolean _paivitaAsiakastiedotSQL() {
             try {
                 String kysely = "UPDATE ASIAKAS SET ETUNIMI=?, SUKUNIMI=?, YRITYS=?, KATUOSOITE=?, POSTINUMERO=?, POSTITOIMIPAIKKA=?" +
                 ", PUHELIN=?, EMAIL=?, ASIAKKAAKSITULOPAIVA=? WHERE ASIAKASNUMERO=?";
@@ -111,9 +117,11 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
                 st.setString(9, jtxtAsiakkaaksitulopaiva.getText());
                 st.setString(10, jtxtAsiakasnumero.getText());
                 suoritaTurvallinenSQLKysely(st, yhteys, "päivitetty");
+                return true;
             } catch (Exception e) {
                 JOptionPane.showInternalMessageDialog(null, "Asiakkaan tietojen päivitys epäonnistui");
                 e.printStackTrace();
+                return false;
             }
         }
 
@@ -215,14 +223,6 @@ public class Asiakasrekisterihallinta extends javax.swing.JFrame {
         /**
          * Lisää uusi asiakas, lisää asiakkaan tiedot samalla asiakastietokantaan
          * @param asiakkaaksiTulopaiva Asiakkaaksitulopäivä muodossa yyyy-mm-dd
-         * @param yritys
-         * @param etunimi
-         * @param sukunimi
-         * @param katuosoite
-         * @param postinumero
-         * @param postitoimipaikka
-         * @param puhelin
-         * @param email
          */
         public void LisaaAsiakas(String asiakkaaksiTulopaiva, String yritys, String etunimi, String sukunimi, String katuosoite, String postinumero, String postitoimipaikka, String puhelin, String email) {
             try {

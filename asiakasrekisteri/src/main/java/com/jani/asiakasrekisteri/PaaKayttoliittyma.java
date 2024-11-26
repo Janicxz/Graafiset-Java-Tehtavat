@@ -37,6 +37,7 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
         jmnuTiedosto = new javax.swing.JMenu();
         jmnuLopeta = new javax.swing.JMenuItem();
         jmnuHallinta = new javax.swing.JMenu();
+        jmnuTuoterekisteri = new javax.swing.JMenuItem();
         jmnuAsiakasrekisteri = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,6 +55,14 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
         jMnuBarPaaValikko.add(jmnuTiedosto);
 
         jmnuHallinta.setText("Hallinta");
+
+        jmnuTuoterekisteri.setText("Tuoterekisteri");
+        jmnuTuoterekisteri.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnuTuoterekisteriActionPerformed(evt);
+            }
+        });
+        jmnuHallinta.add(jmnuTuoterekisteri);
 
         jmnuAsiakasrekisteri.setText("Asiakasrekisteri");
         jmnuAsiakasrekisteri.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +102,11 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
             Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
          }
     }//GEN-LAST:event_jmnuLopetaActionPerformed
+
+    private void jmnuTuoterekisteriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnuTuoterekisteriActionPerformed
+        Tuoterekisterihallinta tr = new Tuoterekisterihallinta();
+        tr.setVisible(true);
+    }//GEN-LAST:event_jmnuTuoterekisteriActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,5 +149,6 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JMenu jmnuHallinta;
     private javax.swing.JMenuItem jmnuLopeta;
     private javax.swing.JMenu jmnuTiedosto;
+    private javax.swing.JMenuItem jmnuTuoterekisteri;
     // End of variables declaration//GEN-END:variables
 }
