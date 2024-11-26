@@ -164,6 +164,7 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
     }
 
     private void paivitaTuotteetTaulukkoUI() {
+        
         DefaultTableModel model = (DefaultTableModel)jtblTuotteet.getModel();
         // Poista entiset rivit
         for (int i = jtblTuotteet.getRowCount() -1; i >= 0; i--) {
@@ -282,6 +283,11 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                 "Asiakasnumero", "Tuotenumero", "Määrä", "A'-Hinta", "Maksutapa", "Tilauspäivä", "Eräpäivä", "Toimituspäivä", "Toimitustapa", "Lisätietoja"
             }
         ));
+        jtblTuotteet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtblTuotteetMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtblTuotteet);
 
         jLabel1.setText("Asiakasnumero:");
@@ -427,6 +433,22 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jtblTuotteetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblTuotteetMouseClicked
+        int i = jtblTuotteet.getSelectedRow();
+        Tilaus tl = tilausLista.haeTilaus(i);
+
+        jtxtAsiakasnro.setText(String.valueOf(tl.getASIAKASNUMERO()));
+        jtxtTuotenro.setText(String.valueOf(tl.getTUOTENUMERO()));
+        jtxtMaara.setText(String.valueOf(tl.getMAARA()));
+        jtxtHinta.setText(String.valueOf(tl.getAHINTA()));
+        // TODO maksutapa
+        jtxtTilauspaiva.setText(tl.getTILAUSPAIVA());
+        jtxtErapaiva.setText(tl.getERAPAIVA());
+        jtxtToimituspaiva.setText(tl.getTOIMITUSPAIVA());
+        jtxtToimitustapa.setText(tl.getTOIMITUSTAPA());
+        jtxtLisatietoja.setText(tl.getLISATIETOJA());
+    }//GEN-LAST:event_jtblTuotteetMouseClicked
 
     /**
      * @param args the command line arguments
