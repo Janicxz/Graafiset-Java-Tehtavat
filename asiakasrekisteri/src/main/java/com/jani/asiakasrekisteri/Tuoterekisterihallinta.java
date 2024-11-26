@@ -158,9 +158,16 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         tilausLista = new TilausLista();
         paivitaTuotteetTaulukkoUI();
     }
-    private boolean tarkistaTekstikentat() {
+    private boolean tarkistaTekstikentatTaytetty() {
         // TODO
-        return true;
+        if (jtxtAsiakasnro.getText().equals("") || jtxtTuotenro.getText().equals("") || jtxtMaara.getText().equals("") || 
+            jtxtHinta.getText().equals("") || jtxtTilauspaiva.getText().equals("") || jtxtErapaiva.getText().equals("") ||
+            jtxtToimituspaiva.getText().equals("") || jtxtToimitustapa.getText().equals("")) {
+                return false;
+            }
+        else {
+            return true;
+        }
     }
 
     private void paivitaTuotteetTaulukkoUI() {
@@ -311,6 +318,11 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         jtbnUusi.setText("Uusi");
 
         jtbnPaivita.setText("Päivitä");
+        jtbnPaivita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtbnPaivitaActionPerformed(evt);
+            }
+        });
 
         jtbnPoista.setText("Poista");
 
@@ -449,6 +461,22 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         jtxtToimitustapa.setText(tl.getTOIMITUSTAPA());
         jtxtLisatietoja.setText(tl.getLISATIETOJA());
     }//GEN-LAST:event_jtblTuotteetMouseClicked
+
+    private void jtbnPaivitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnPaivitaActionPerformed
+       if (!tarkistaTekstikentatTaytetty()) {
+            JOptionPane.showInternalMessageDialog(null, "Kaikki tekstikentät ei ole täytetty!", "", JOptionPane.ERROR_MESSAGE);
+       }
+       int i = jtblTuotteet.getSelectedRow();
+       try {
+        // TODO maksutapa
+            tilausLista.haeTilaus(i).paivitaTilaus(Integer.parseInt(jtxtAsiakasnro.getText()),
+            Integer.parseInt(jtxtTuotenro.getText()), 0, Integer.parseInt(jtxtMaara.getText()), Integer.parseInt(jtxtHinta.getText()),
+            jtxtTilauspaiva.getText(), jtxtErapaiva.getText(), jtxtToimituspaiva.getText(), jtxtToimitustapa.getText(), jtxtLisatietoja.getText());
+        
+       } catch (Exception e) {
+            JOptionPane.showInternalMessageDialog(null, "Virhe tilauksen päivityksessä!", "", JOptionPane.ERROR_MESSAGE);
+       }
+    }//GEN-LAST:event_jtbnPaivitaActionPerformed
 
     /**
      * @param args the command line arguments
