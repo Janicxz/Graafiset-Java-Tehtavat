@@ -56,7 +56,7 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
 
         jmnuHallinta.setText("Hallinta");
 
-        jmnuTuoterekisteri.setText("Tuoterekisteri");
+        jmnuTuoterekisteri.setText("Tilaustenhallinta");
         jmnuTuoterekisteri.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmnuTuoterekisteriActionPerformed(evt);
@@ -104,7 +104,7 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
     }//GEN-LAST:event_jmnuLopetaActionPerformed
 
     private void jmnuTuoterekisteriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnuTuoterekisteriActionPerformed
-        Tuoterekisterihallinta tr = new Tuoterekisterihallinta();
+        Tilaustenhallinta tr = new Tilaustenhallinta();
         tr.setVisible(true);
     }//GEN-LAST:event_jmnuTuoterekisteriActionPerformed
 

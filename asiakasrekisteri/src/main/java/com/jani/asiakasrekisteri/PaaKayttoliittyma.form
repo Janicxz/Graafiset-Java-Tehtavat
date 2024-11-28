@@ -26,7 +26,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jmnuTuoterekisteri">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tuoterekisteri"/>
+                <Property name="text" type="java.lang.String" value="Tilaustenhallinta"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmnuTuoterekisteriActionPerformed"/>

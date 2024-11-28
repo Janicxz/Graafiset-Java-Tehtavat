@@ -20,7 +20,7 @@ import com.jani.asiakasrekisteri.Asiakasrekisterihallinta.Asiakas;
  *
  * @author Jani
  */
-public class Tuoterekisterihallinta extends javax.swing.JFrame {
+public class Tilaustenhallinta extends javax.swing.JFrame {
     /**
      * Sisältää tilauksiin liittyvän datan
      */
@@ -385,10 +385,10 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
 
 
     /**
-     * Creates new form Tuoterekisterihallinta
+     * Creates new form Tilaustenhallinta
      */
     TilausLista tilausLista;
-    public Tuoterekisterihallinta() {
+    public Tilaustenhallinta() {
         initComponents();
         tilausLista = new TilausLista();
         paivitaTuotteetTaulukkoUI();
@@ -558,6 +558,7 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         jtxtMaksutapa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Tilaustenhallinta");
 
         jtblTilaukset.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -998,20 +999,21 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Tuoterekisterihallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tilaustenhallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Tuoterekisterihallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tilaustenhallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Tuoterekisterihallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tilaustenhallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Tuoterekisterihallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tilaustenhallinta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Tuoterekisterihallinta().setVisible(true);
+                new Tilaustenhallinta().setVisible(true);
             }
         });
     }
