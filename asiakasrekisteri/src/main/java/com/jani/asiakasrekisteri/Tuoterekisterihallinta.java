@@ -21,6 +21,9 @@ import com.jani.asiakasrekisteri.Asiakasrekisterihallinta.Asiakas;
  * @author Jani
  */
 public class Tuoterekisterihallinta extends javax.swing.JFrame {
+    /**
+     * Sisältää tilauksiin liittyvän datan
+     */
     class Tilaus {
         private int ASIAKASNUMERO;
         private int TILAUSNUMERO;
@@ -77,6 +80,9 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
             this.LISATIETOJA = lisatietoja;
         }
     }
+    /**
+     * Sisältää tilausrivin (yhteen tilaukseen kuuluvat tuotteet, määrä ja hinta) datan
+     */
     class TilausRivi {
         private int TILAUSRIVINUMERO;
         private int TILAUSNUMERO;
@@ -108,6 +114,9 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
             this.AHINTA = ahinta;
         }
     }
+    /**
+     * Sisältää tilauksiin ja tilausriviin liittyvän datan
+     */
     class TilausLista {
         private ArrayList<Tilaus> TILAUKSET;
         private ArrayList<TilausRivi> TILAUSRIVIT;
@@ -116,7 +125,13 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
             this.TILAUKSET = new ArrayList<>();
             this.TILAUSRIVIT = new ArrayList<>();
         }
-
+        /**
+         *  Lisää tuotteita tilaukseen
+         * @param tilausnumero
+         * @param tuotenumero
+         * @param maara
+         * @param ahinta
+         */
         public void lisaaTilausListaan(int tilausnumero, int tuotenumero, int maara, int ahinta) {
             String query = "INSERT INTO tilausrivi(`TILAUSNUMERO`, `TUOTENUMERO`, `MAARA`, `AHINTA`) ";
             query += "VALUES(?,?,?,?);";
@@ -154,8 +169,18 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-
-        public void lisaaTilaus(int tilausnumero,int asiakasnumero, int maksutapanumero,
+        /**
+         * Lisää uusi tilaus
+         * @param tilausnumero
+         * @param asiakasnumero
+         * @param maksutapanumero
+         * @param tilauspaiva
+         * @param erapaiva
+         * @param toimituspaiva
+         * @param toimitustapa
+         * @param lisatietoja
+         */
+        public void lisaaTilaus(int asiakasnumero, int maksutapanumero,
         String tilauspaiva, String erapaiva, String toimituspaiva, String toimitustapa, String lisatietoja) {
             // TODO
             String query = "INSERT INTO tilaus(`ASIAKASNUMERO`, `MAKSUTAPANUMERO`, `TILAUSPAIVA`, `TOIMITUSPAIVA`, `TOIMITUSTAPA`, `ERAPAIVA`, `LISATIETOJA`) ";
@@ -171,22 +196,20 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                 st.setDate(6, java.sql.Date.valueOf(erapaiva));
                 st.setString(7, lisatietoja);
 
-                //System.out.println(st.toString());
                 suoritaTurvallinenSQLKysely(st, yhteys, "Lisätty", false);
-                /* 
-                query = "INSERT INTO tilausrivi(`TILAUSNUMERO`, `TUOTENUMERO`, `MAARA`, `AHINTA`) VALUES(LAST_INSERT_ID(), ?, ?, ?);";
-                st = yhteys.prepareStatement(query);
-                st.setInt(1, tuotenumero);
-                st.setInt(2, maara);
-                st.setInt(3, ahinta);
-                suoritaTurvallinenSQLKysely(st, yhteys, "Lisätty", true);
-                */
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            //this.TILAUKSET.add(tilaus);
         }
+        /**
+         * Päivitä tilausrivi (tilauksen tuotteet)
+         * @param tilausrivinumero
+         * @param tilausnumero
+         * @param tuotenumero
+         * @param maara
+         * @param ahinta
+         */
         public void paivitaTilausRivi(int tilausrivinumero, int tilausnumero, int tuotenumero, int maara, int ahinta) {
             Connection yhteys = luoYhteys();
             PreparedStatement st;
@@ -213,8 +236,18 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-
-        public void paivitaTilaus(int tilausnumero, int asiakasnumero, int tuotenumero, int maksutapanumero, int maara, int ahinta, String tilauspaiva, String erapaiva, String toimituspaiva, String toimitustapa, String lisatietoja) {
+        /**
+         * Päivitä tilaus
+         * @param tilausnumero
+         * @param asiakasnumero
+         * @param maksutapanumero
+         * @param tilauspaiva
+         * @param erapaiva
+         * @param toimituspaiva
+         * @param toimitustapa
+         * @param lisatietoja
+         */
+        public void paivitaTilaus(int tilausnumero, int asiakasnumero, int maksutapanumero, String tilauspaiva, String erapaiva, String toimituspaiva, String toimitustapa, String lisatietoja) {
             String query = "UPDATE `tilaus` SET ASIAKASNUMERO=?, MAKSUTAPANUMERO=?, TILAUSPAIVA=?, TOIMITUSPAIVA=?, TOIMITUSTAPA=?, ERAPAIVA=?, LISATIETOJA=?";
             query += "WHERE tilausnumero = ?";
             
@@ -230,22 +263,17 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                 st.setDate(6, java.sql.Date.valueOf(erapaiva));
                 st.setString(7, lisatietoja);
                 st.setInt(8, tilausnumero);
-                suoritaTurvallinenSQLKysely(st, yhteys, query, false);
-
-                query = "UPDATE `tilausrivi` SET TUOTENUMERO=?, MAARA=?, AHINTA=? WHERE TILAUSNUMERO=?";
-                st = yhteys.prepareStatement(query);
-                st.setInt(1, tuotenumero);
-                st.setInt(2, maara);
-                st.setInt(3, ahinta);
-                st.setInt(4, tilausnumero);
-                System.out.println(st.toString());
                 suoritaTurvallinenSQLKysely(st, yhteys, "päivitetty", true);
-
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
+        /**
+         * Etsi tilausrivi tilausrivi numerolla
+         * @param tilausnro Tilausnumero
+         * @return Palauttaa TilausRivi olion, Null jos tilausriviä ei löytynyt
+         */
         public TilausRivi haeTilausriviTilausnumerolla(int tilausnro) {
             for (TilausRivi rivi : this.TILAUSRIVIT) {
                 if (rivi.getTILAUSRIVINUMERO() == tilausnro) {
@@ -266,6 +294,10 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         public int haeTilauslistaPituus() {
             return this.TILAUKSET.size();
         }
+        /**
+         * Poistaa tilausrivin
+         * @param tilausriviNro Tilausrivinumero
+         */
         public void poistaTilausRivi(int tilausriviNro) {
             //System.out.println("indeksi: " + tilausriviNro);
             String query = "DELETE FROM tilausrivi WHERE `TILAUSRIVINUMERO` = ?";
@@ -284,6 +316,10 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
+        /**
+         * Poistaa tilauksen mikäli tilauksessa ei ole tilausrivejä
+         * @param tilausnumero Tilausnumero
+         */
         public void poistaTilaus(int tilausnumero) {
             //System.out.println("indeksi: " + indeksi);
             //int tlNumero = this.TILAUKSET.get(indeksi).getTILAUSNUMERO();
@@ -358,17 +394,29 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         paivitaTuotteetTaulukkoUI();
         tilausriviUIKayttoon(false);
     }
+    /**
+     * Tarkista onko kaikki tekstikentät täytetty oikein
+     * @return
+     */
     private boolean tarkistaTekstikentatTaytetty() {
         // TODO
-        if (jtxtAsiakasnro.getText().equals("") || jtxtTuotenro.getText().equals("") || jtxtMaara.getText().equals("") || 
-            jtxtHinta.getText().equals("") || jtxtTilauspaiva.getText().equals("") || jtxtErapaiva.getText().equals("") ||
+        if (tilausriviValittu) {
+            if (jtxtTilausnro.getText().equals("") || jtxtTuotenro.getText().equals("") ||
+            jtxtHinta.getText().equals("") || jtxtHinta.getText().equals("") ) {
+                return false;
+            }
+        }
+        else {
+            if (jtxtAsiakasnro.getText().equals("") || jtxtMaksutapa.getText().equals("")  || jtxtTilauspaiva.getText().equals("") || jtxtErapaiva.getText().equals("") ||
             jtxtToimituspaiva.getText().equals("") || jtxtToimitustapa.getText().equals("")) {
                 return false;
             }
-        else {
-            return true;
         }
+        return true;
     }
+    /**
+     * Päivittää tilausrivi taulukon
+     */
     private void paivitaTilausriviTaulukko() {
         DefaultTableModel modelTlRivi = (DefaultTableModel)jtblTilausrivi.getModel();
         for (int i = jtblTilausrivi.getRowCount() -1; i >= 0; i--) {
@@ -389,7 +437,9 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
             }
         }
     }
-
+    /**
+     * Päivittää tuotteet taulukon
+     */
     private void paivitaTuotteetTaulukkoUI() {
         
         DefaultTableModel model = (DefaultTableModel)jtblTilaukset.getModel();
@@ -397,24 +447,14 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         for (int i = jtblTilaukset.getRowCount() -1; i >= 0; i--) {
             model.removeRow(i);
         }
-        /*DefaultTableModel modelTlRivi = (DefaultTableModel)jtblTilausrivi.getModel();
-        for (int i = jtblTilausrivi.getRowCount() -1; i >= 0; i--) {
-            modelTlRivi.removeRow(i);
-        }*/
 
         tilausLista.HaeTilauksetTietokannasta();
 
         for (int i = 0; i < tilausLista.haeTilauslistaPituus(); i++) {
             Object[] row = new Object[11];
-            //Object[] rowTlRivi = new Object[4];
-            // Lisää uudet asiakkaat
-            //asiakasLista.HaeAsiakkaatTietokannasta();
             Tilaus tl = tilausLista.haeTilaus(i);
             row[0] = tl.getASIAKASNUMERO();
             row[1] = tl.getTILAUSNUMERO();
-            //row[2] = tl.getTUOTENUMERO();
-            //row[3] = tl.getMAARA();
-            //row[4] = tl.getAHINTA();
             row[2] = tl.getMAKSUTAPANUMERO();
             row[3] = tl.getTILAUSPAIVA();
             row[4] = tl.getERAPAIVA();
@@ -422,12 +462,7 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
             row[6] = tl.getTOIMITUSTAPA();
             row[7] = tl.getLISATIETOJA();
 
-            /*rowTlRivi[0] = tl.getTILAUSNUMERO();
-            rowTlRivi[1] = tl.getTUOTENUMERO();
-            rowTlRivi[2] = tl.getMAARA();
-            rowTlRivi[3] = tl.getAHINTA();*/
             model.addRow(row);
-            //modelTlRivi.addRow(rowTlRivi);
         }
     }
     /**
@@ -512,7 +547,6 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         jtbnPaivita = new javax.swing.JButton();
         jtbnPoista = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jcbMaksutapa = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jtxtTilausnro = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -521,6 +555,7 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         jrbtnLisaaTilaukseen = new javax.swing.JRadioButton();
         jtxtTilausrivinro = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        jtxtMaksutapa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -555,13 +590,21 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
 
         jLabel4.setText("A-hinta:");
 
+        jtxtTilauspaiva.setToolTipText("Muodossa yyyy-MM-dd");
+
         jLabel5.setText("Tilauspäivä:");
 
         jLabel6.setText("Eräpäivä:");
 
+        jtxtErapaiva.setToolTipText("Muodossa yyyy-MM-dd");
+
         jLabel7.setText("Toimituspäivä:");
 
+        jtxtToimituspaiva.setToolTipText("Muodossa yyyy-MM-dd");
+
         jLabel8.setText("Toimitustapa:");
+
+        jtxtToimitustapa.setToolTipText("");
 
         jLabel9.setText("Lisätietoja:");
 
@@ -635,46 +678,49 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jtxtMaksutapa, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtTuotenro, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtMaara, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtHinta, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtErapaiva, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtToimituspaiva, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtToimitustapa, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtTilauspaiva, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtTilausnro, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jtxtLisatietoja, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
@@ -694,12 +740,9 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtxtTilausrivinro, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jcbMaksutapa, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jtxtTilausrivinro, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel10))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
@@ -762,9 +805,9 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addComponent(jtxtLisatietoja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcbMaksutapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jtxtMaksutapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jrbtnLisaaTilaukseen)
@@ -779,7 +822,10 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Tilaus valittu hiirellä
+     * @param evt
+     */
     private void jtblTilauksetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblTilauksetMouseClicked
         int i = jtblTilaukset.getSelectedRow();
         Tilaus tl = tilausLista.haeTilaus(i);
@@ -787,10 +833,7 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
         jtxtAsiakasnro.setText(String.valueOf(tl.getASIAKASNUMERO()));
         jtxtTilausnro.setText(String.valueOf(tl.getTILAUSNUMERO()));
         jtxtTilausnro.setEditable(false);
-        //jtxtTuotenro.setText(String.valueOf(tl.getTUOTENUMERO()));
-        //jtxtMaara.setText(String.valueOf(tl.getMAARA()));
-        //jtxtHinta.setText(String.valueOf(tl.getAHINTA()));
-        // TODO maksutapa
+        jtxtMaksutapa.setText(String.valueOf(tl.getMAKSUTAPANUMERO()));
         jtxtTilauspaiva.setText(tl.getTILAUSPAIVA());
         jtxtErapaiva.setText(tl.getERAPAIVA());
         jtxtToimituspaiva.setText(tl.getTOIMITUSPAIVA());
@@ -799,41 +842,45 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
 
         paivitaTilausriviTaulukko();
     }//GEN-LAST:event_jtblTilauksetMouseClicked
-
+    /**
+     * Päivitä nappia painettu
+     * @param evt
+     */
     private void jtbnPaivitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnPaivitaActionPerformed
        if (!tarkistaTekstikentatTaytetty()) {
             JOptionPane.showInternalMessageDialog(null, "Kaikki tekstikentät ei ole täytetty!", "", JOptionPane.ERROR_MESSAGE);
        }
        int i = jtblTilaukset.getSelectedRow();
        try {
-        // TODO maksutapa
             if(tilausriviValittu) {
                 tilausLista.paivitaTilausRivi(
-                Integer.parseInt(jtxtTilausrivinro.getText()), 
-                Integer.parseInt(jtxtTilausnro.getText()), 
-                Integer.parseInt(jtxtTuotenro.getText()), 
-                Integer.parseInt(jtxtMaara.getText()), 
+                Integer.parseInt(jtxtTilausrivinro.getText()),
+                Integer.parseInt(jtxtTilausnro.getText()),
+                Integer.parseInt(jtxtTuotenro.getText()),
+                Integer.parseInt(jtxtMaara.getText()),
                 Integer.parseInt(jtxtHinta.getText()));
             }
             else{
                 tilausLista.paivitaTilaus(Integer.parseInt(jtxtTilausnro.getText()), Integer.parseInt(jtxtAsiakasnro.getText()),
-                Integer.parseInt(jtxtTuotenro.getText()), 1, Integer.parseInt(jtxtMaara.getText()), Integer.parseInt(jtxtHinta.getText()),
+                Integer.parseInt(jtxtMaksutapa.getText()),
                 jtxtTilauspaiva.getText(), jtxtErapaiva.getText(), jtxtToimituspaiva.getText(), jtxtToimitustapa.getText(), jtxtLisatietoja.getText());
             }
         
        } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showInternalMessageDialog(null, "Virhe tilauksen päivityksessä!", "", JOptionPane.ERROR_MESSAGE);
        }
     }//GEN-LAST:event_jtbnPaivitaActionPerformed
-
+    /**
+     * Poista nappia painettu
+     * @param evt
+     */
     private void jtbnPoistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnPoistaActionPerformed
         
         if (tilausriviValittu) {
             try {
                 int tilausriviNro = Integer.valueOf(jtxtTilausrivinro.getText());
                 tilausLista.poistaTilausRivi(tilausriviNro);
-                //int i = jtblTilausrivi.getSelectedRow();
-                //(DefaultTableModel)jtblTilausrivi.getModel().removeRow(i);
             } catch (Exception e) {
                 JOptionPane.showInternalMessageDialog(null, "Virhe tilausrivin poistamisessa!", "", JOptionPane.ERROR_MESSAGE);
             }
@@ -851,9 +898,11 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
             }
             
         }
-        //JOptionPane.showInternalMessageDialog(null, "Tilaus poistettu.");
     }//GEN-LAST:event_jtbnPoistaActionPerformed
-
+    /**
+     * Uusi tilaus/tilausrivi nappia painettu
+     * @param evt
+     */
     private void jtbnUusiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbnUusiActionPerformed
         int tilausnro = 0;
         try {
@@ -865,17 +914,20 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
             tilausLista.lisaaTilausListaan(tilausnro, Integer.parseInt(jtxtTuotenro.getText()), Integer.parseInt(jtxtMaara.getText()), Integer.parseInt(jtxtHinta.getText()));
         }
         else  {
-            tilausLista.lisaaTilaus(tilausnro,Integer.parseInt(jtxtAsiakasnro.getText()), 1,
-            jtxtTilauspaiva.getText(), jtxtErapaiva.getText(), 
+            tilausLista.lisaaTilaus(Integer.parseInt(jtxtAsiakasnro.getText()), Integer.parseInt(jtxtMaksutapa.getText()),
+            jtxtTilauspaiva.getText(), jtxtErapaiva.getText(),
             jtxtToimituspaiva.getText(), jtxtToimitustapa.getText(), jtxtLisatietoja.getText());
         }
     }//GEN-LAST:event_jtbnUusiActionPerformed
-        
+    /**
+     * Ottaa/Poistaa tilausrivi tekstikentät käyttöön/käytöstä ja tekee saman tilaus tekstikentille.
+     * @param kaytossa
+     */
     private void tilausriviUIKayttoon(boolean kaytossa) {
         tilausriviValittu = kaytossa;
         // tilaus UI
         jtxtAsiakasnro.setEnabled(!kaytossa);
-        jcbMaksutapa.setEnabled(!kaytossa);
+        jtxtMaksutapa.setEnabled(!kaytossa);
         jtxtTilauspaiva.setEnabled(!kaytossa);
         jtxtErapaiva.setEnabled(!kaytossa);
         jtxtToimituspaiva.setEnabled(!kaytossa);
@@ -905,27 +957,20 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
     private void jtblTilauksetFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtblTilauksetFocusGained
         tilausriviUIKayttoon(false);
     }//GEN-LAST:event_jtblTilauksetFocusGained
-
+    /**
+     * Tilausrivi taulukko valittu hiirellä
+     * @param evt
+     */
     private void jtblTilausriviMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblTilausriviMouseClicked
-        // TODO add your handling code here:
         int i = jtblTilausrivi.getSelectedRow();
         int tilausNro = (int)jtblTilausrivi.getValueAt(i, 0);
-        //Tilaus tl = tilausLista.haeTilaus(i);
-        //TilausRivi tlr = tilausLista.haeTilausrivi(i);
         TilausRivi tlr = tilausLista.haeTilausriviTilausnumerolla(tilausNro);
-        //jtxtAsiakasnro.setText(String.valueOf(tl.getASIAKASNUMERO()));
         jtxtTilausnro.setText(String.valueOf(tlr.getTILAUSNUMERO()));
         jtxtTuotenro.setText(String.valueOf(tlr.getTUOTENUMERO()));
         jtxtMaara.setText(String.valueOf(tlr.getMAARA()));
         jtxtHinta.setText(String.valueOf(tlr.getAHINTA()));
         jtxtTilausrivinro.setText(String.valueOf(tlr.getTILAUSRIVINUMERO()));
         jtxtTilausrivinro.setEditable(false);
-        // TODO maksutapa
-        /*jtxtTilauspaiva.setText(tl.getTILAUSPAIVA());
-        jtxtErapaiva.setText(tl.getERAPAIVA());
-        jtxtToimituspaiva.setText(tl.getTOIMITUSPAIVA());
-        jtxtToimitustapa.setText(tl.getTOIMITUSTAPA());
-        jtxtLisatietoja.setText(tl.getLISATIETOJA());*/
     }//GEN-LAST:event_jtblTilausriviMouseClicked
 
     private void jrbtnLisaaTilaukseenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbtnLisaaTilaukseenActionPerformed
@@ -987,7 +1032,6 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JComboBox<String> jcbMaksutapa;
     private javax.swing.JRadioButton jrbtnLisaaTilaukseen;
     private javax.swing.JRadioButton jrbtnUusitilaus;
     private javax.swing.JTable jtblTilaukset;
@@ -1000,6 +1044,7 @@ public class Tuoterekisterihallinta extends javax.swing.JFrame {
     private javax.swing.JTextField jtxtHinta;
     private javax.swing.JTextField jtxtLisatietoja;
     private javax.swing.JTextField jtxtMaara;
+    private javax.swing.JTextField jtxtMaksutapa;
     private javax.swing.JTextField jtxtTilausnro;
     private javax.swing.JTextField jtxtTilauspaiva;
     private javax.swing.JTextField jtxtTilausrivinro;
