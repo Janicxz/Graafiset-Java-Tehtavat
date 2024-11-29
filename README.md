@@ -4,9 +4,9 @@
 A (unsecure) client registry frontend, loads/saves data from/to MySQL server.
 
 Features:
--User management
--Product management
--Order management
+- User management
+- Product management
+- Order management
 
 ![notepad_2024-11-29_15-18-26](https://github.com/user-attachments/assets/24d776a6-212f-4b5d-a729-ddb4cbf44e52)
 
