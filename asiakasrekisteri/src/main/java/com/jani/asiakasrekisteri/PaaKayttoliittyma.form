@@ -26,10 +26,18 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jmnuTuoterekisteri">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tilaustenhallinta"/>
+                <Property name="text" type="java.lang.String" value="Tuoterekisteri"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmnuTuoterekisteriActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jmnuTilaustenhallinta">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Tilaustenhallinta"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmnuTilaustenhallintaActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jmnuAsiakasrekisteri">

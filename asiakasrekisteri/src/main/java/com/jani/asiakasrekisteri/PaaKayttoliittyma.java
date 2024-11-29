@@ -38,6 +38,7 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
         jmnuLopeta = new javax.swing.JMenuItem();
         jmnuHallinta = new javax.swing.JMenu();
         jmnuTuoterekisteri = new javax.swing.JMenuItem();
+        jmnuTilaustenhallinta = new javax.swing.JMenuItem();
         jmnuAsiakasrekisteri = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,13 +57,21 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
 
         jmnuHallinta.setText("Hallinta");
 
-        jmnuTuoterekisteri.setText("Tilaustenhallinta");
+        jmnuTuoterekisteri.setText("Tuoterekisteri");
         jmnuTuoterekisteri.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmnuTuoterekisteriActionPerformed(evt);
             }
         });
         jmnuHallinta.add(jmnuTuoterekisteri);
+
+        jmnuTilaustenhallinta.setText("Tilaustenhallinta");
+        jmnuTilaustenhallinta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnuTilaustenhallintaActionPerformed(evt);
+            }
+        });
+        jmnuHallinta.add(jmnuTilaustenhallinta);
 
         jmnuAsiakasrekisteri.setText("Asiakasrekisteri");
         jmnuAsiakasrekisteri.addActionListener(new java.awt.event.ActionListener() {
@@ -103,8 +112,14 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
          }
     }//GEN-LAST:event_jmnuLopetaActionPerformed
 
+    private void jmnuTilaustenhallintaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnuTilaustenhallintaActionPerformed
+        Tilaustenhallinta th = new Tilaustenhallinta();
+        th.setVisible(true);
+    }//GEN-LAST:event_jmnuTilaustenhallintaActionPerformed
+
     private void jmnuTuoterekisteriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnuTuoterekisteriActionPerformed
-        Tilaustenhallinta tr = new Tilaustenhallinta();
+        // TODO add your handling code here:
+        Tuoterekisteri tr = new Tuoterekisteri();
         tr.setVisible(true);
     }//GEN-LAST:event_jmnuTuoterekisteriActionPerformed
 
@@ -149,6 +164,7 @@ public class PaaKayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JMenu jmnuHallinta;
     private javax.swing.JMenuItem jmnuLopeta;
     private javax.swing.JMenu jmnuTiedosto;
+    private javax.swing.JMenuItem jmnuTilaustenhallinta;
     private javax.swing.JMenuItem jmnuTuoterekisteri;
     // End of variables declaration//GEN-END:variables
 }
