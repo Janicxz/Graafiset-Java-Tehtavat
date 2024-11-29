@@ -2,6 +2,7 @@
  
 # Asiakasrekisteri / Client registry
 A (unsecure) client registry frontend, loads/saves data from/to MySQL server.
+
 Features:
 -User management
 -Product management
