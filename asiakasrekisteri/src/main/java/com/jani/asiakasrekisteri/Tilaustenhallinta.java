@@ -145,7 +145,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 st.setInt(4, ahinta);
                 suoritaTurvallinenSQLKysely(st, yhteys, "Lisätty", false);
 
-                // TODO hae viimeisein tilausrivi id ja lisää se tähän
                 query = "SELECT LAST_INSERT_ID() AS TILAUSRIVINUMERO";
                 st = yhteys.prepareStatement(query);
                 ResultSet rs = st.executeQuery();
@@ -164,8 +163,9 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 rowTlRivi[3] = maara;
                 rowTlRivi[4] = ahinta;
                 model.addRow(rowTlRivi);
+                JOptionPane.showInternalMessageDialog(null, "Tilaus lisätty tilauslistaan");
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                JOptionPane.showInternalMessageDialog(null, "Tilauksen lisäys tilauslistaan epäonnistui.", "Virhe", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
@@ -182,7 +182,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
          */
         public void lisaaTilaus(int asiakasnumero, int maksutapanumero,
         String tilauspaiva, String erapaiva, String toimituspaiva, String toimitustapa, String lisatietoja) {
-            // TODO
             String query = "INSERT INTO tilaus(`ASIAKASNUMERO`, `MAKSUTAPANUMERO`, `TILAUSPAIVA`, `TOIMITUSPAIVA`, `TOIMITUSTAPA`, `ERAPAIVA`, `LISATIETOJA`) ";
             query += "VALUES(?,?,?,?,?,?,?);";
             try {
@@ -196,14 +195,14 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 st.setDate(6, java.sql.Date.valueOf(erapaiva));
                 st.setString(7, lisatietoja);
 
-                suoritaTurvallinenSQLKysely(st, yhteys, "Lisätty", false);
+                suoritaTurvallinenSQLKysely(st, yhteys, "Lisätty", true);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                JOptionPane.showInternalMessageDialog(null, "Tilauksen lisäys epäonnistui.", "Virhe", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
         /**
-         * Päivitä tilausrivi (tilauksen tuotteet)
+         * Päivitä tilausrivi (tilaukseen kuuluvat tuotteet)
          * @param tilausrivinumero
          * @param tilausnumero
          * @param tuotenumero
@@ -232,7 +231,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 model.setValueAt(maara, i, 3);
                 model.setValueAt(ahinta, i, 4);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -265,12 +263,11 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 st.setInt(8, tilausnumero);
                 suoritaTurvallinenSQLKysely(st, yhteys, "päivitetty", true);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
         /**
-         * Etsi tilausrivi tilausrivi numerolla
+         * Hae tilausrivi tilausrivinumerolla
          * @param tilausnro Tilausnumero
          * @return Palauttaa TilausRivi olion, Null jos tilausriviä ei löytynyt
          */
@@ -299,7 +296,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
          * @param tilausriviNro Tilausrivinumero
          */
         public void poistaTilausRivi(int tilausriviNro) {
-            //System.out.println("indeksi: " + tilausriviNro);
             String query = "DELETE FROM tilausrivi WHERE `TILAUSRIVINUMERO` = ?";
 
             try {
@@ -312,7 +308,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 int i = jtblTilausrivi.getSelectedRow();
                 model.removeRow(i);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -321,8 +316,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
          * @param tilausnumero Tilausnumero
          */
         public void poistaTilaus(int tilausnumero) {
-            //System.out.println("indeksi: " + indeksi);
-            //int tlNumero = this.TILAUKSET.get(indeksi).getTILAUSNUMERO();
             String query = "DELETE FROM tilaus WHERE `TILAUSNUMERO` = ?";
 
             try {
@@ -331,7 +324,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 st.setInt(1, tilausnumero);
                 suoritaTurvallinenSQLKysely(st, yhteys, "Poistettu", true);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -399,7 +391,6 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
      * @return
      */
     private boolean tarkistaTekstikentatTaytetty() {
-        // TODO
         if (tilausriviValittu) {
             if (jtxtTilausnro.getText().equals("") || jtxtTuotenro.getText().equals("") ||
             jtxtHinta.getText().equals("") || jtxtHinta.getText().equals("") ) {
@@ -556,6 +547,8 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
         jtxtTilausrivinro = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jtxtMaksutapa = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tilaustenhallinta");
@@ -636,10 +629,7 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
 
         jtblTilausrivi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Tilausrivinumero", "Tilausnumero", "Tuotenumero", "Määrä", "A'-Hinta"
@@ -674,6 +664,12 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
         });
 
         jLabel12.setText("Tilausrivinumero:");
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel13.setText("Tilaukset");
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel14.setText("Tilauksen sisältö");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -747,14 +743,27 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel14))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel13)
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
@@ -774,14 +783,8 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jtxtHinta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
+                            .addComponent(jtxtHinta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
                             .addComponent(jtxtTilausrivinro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -809,7 +812,7 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(jtxtMaksutapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jrbtnLisaaTilaukseen)
                             .addComponent(jrbtnUusitilaus, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -908,8 +911,19 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
         int tilausnro = 0;
         try {
             tilausnro = Integer.parseInt(jtxtTilausnro.getText());
+            if (!tilausriviValittu){
+                java.sql.Date.valueOf(jtxtTilauspaiva.getText());
+                java.sql.Date.valueOf(jtxtErapaiva.getText());
+                java.sql.Date.valueOf(jtxtToimituspaiva.getText());
+            }
         } catch (Exception e) {
-            // TODO: handle exception
+            if(!tilausriviValittu) {
+                JOptionPane.showInternalMessageDialog(null, "Virhe tilauksen lisäämisessä!\nOnhan päivämäärät muodossa yyyy-mm-dd?", "", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                JOptionPane.showInternalMessageDialog(null, "Virhe tilauksen lisäämisessä!", "", JOptionPane.ERROR_MESSAGE);
+            }
+            return;
         }
         if (tilausriviValittu) {
             tilausLista.lisaaTilausListaan(tilausnro, Integer.parseInt(jtxtTuotenro.getText()), Integer.parseInt(jtxtMaara.getText()), Integer.parseInt(jtxtHinta.getText()));
@@ -1024,6 +1038,8 @@ public class Tilaustenhallinta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

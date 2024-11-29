@@ -69,7 +69,6 @@ public class Tuoterekisteri extends javax.swing.JFrame {
         public void lisaaTuote(String nimi, int ahinta) {
             String query = "INSERT INTO tuote(`TUOTENIMI`, `AHINTA`) VALUES(?, ?)";
             PreparedStatement st;
-            //ResultSet rs;
 
             try {
                 Connection yhteys  = luoYhteys();
@@ -92,7 +91,6 @@ public class Tuoterekisteri extends javax.swing.JFrame {
         public void paivitaTuote(int tuoteNumero, String nimi, int ahinta) {
             String query = "UPDATE `tuote` SET TUOTENIMI=?, AHINTA=? WHERE TUOTENUMERO=?";
             PreparedStatement st;
-            //ResultSet rs;
 
             try {
                 Connection yhteys  = luoYhteys();
@@ -114,8 +112,6 @@ public class Tuoterekisteri extends javax.swing.JFrame {
         public void poistaTuote(int tuoteNumero) {
             String query = "DELETE FROM `tuote` WHERE TUOTENUMERO=?";
             PreparedStatement st;
-            //ResultSet rs;
-
             try {
                 Connection yhteys  = luoYhteys();
                 st = yhteys.prepareStatement(query);
@@ -164,10 +160,6 @@ public class Tuoterekisteri extends javax.swing.JFrame {
             int tulos = kysely.executeUpdate();
 
             if (tulos > 0) {
-                // Päivitä taulukko
-                /*DefaultTableModel model = (DefaultTableModel)jtblTilaukset.getModel();
-                model.setRowCount(0);
-                paivitaTuotteetTaulukkoUI();*/
                 paivitaTuotteetTaulukko();
                 if (suljeYhteys) {
                     JOptionPane.showMessageDialog(null, "Data " + viesti + " onnistuneesti");
