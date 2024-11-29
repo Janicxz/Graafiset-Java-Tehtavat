@@ -2,8 +2,12 @@
  
 # Asiakasrekisteri / Client registry
 A (unsecure) client registry frontend, loads/saves data from/to MySQL server.
+Features:
+-User management
+-Product management
+-Order management
 
-![netbeans64_2024-11-22_22-35-09](https://github.com/user-attachments/assets/4523bcba-37ae-4661-b92e-a9c0c5c94697)
+![notepad_2024-11-29_15-18-26](https://github.com/user-attachments/assets/24d776a6-212f-4b5d-a729-ddb4cbf44e52)
 
 # Horoskooppi / Horoscope
 Shows horoscope for given birthdate.
