@@ -15,6 +15,12 @@ Shows horoscope for given birthdate.
 
 ![java_2024-11-23_00-33-20](https://github.com/user-attachments/assets/65188cc8-75bb-4752-8bd6-a44d39afacdb)
 
+# Tilauslaskin
+Calculates final price for order.
+
+![java_2024-12-02_15-55-30](https://github.com/user-attachments/assets/e5ed46ff-ad47-4903-bd95-93333b5c71a7)
+
+
 # Suorakaidepintaala
 Calculates square metres for given width and height
 
