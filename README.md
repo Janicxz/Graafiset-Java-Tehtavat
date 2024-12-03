@@ -15,7 +15,13 @@ Shows horoscope for given birthdate.
 
 ![java_2024-11-23_00-33-20](https://github.com/user-attachments/assets/65188cc8-75bb-4752-8bd6-a44d39afacdb)
 
-# Tilauslaskin
+# ForSilmukka / For loop
+Simple for loop program, greets user for every birthday.
+
+![2024-12-03_12-35-26](https://github.com/user-attachments/assets/4af5923e-baf3-4622-97ee-727a73f8de71)
+
+
+# Tilauslaskin / Order calculator
 Calculates final price for order.
 
 ![java_2024-12-02_15-55-30](https://github.com/user-attachments/assets/e5ed46ff-ad47-4903-bd95-93333b5c71a7)
