@@ -416,7 +416,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         if (!tarkistaSyotteet()) {
             return;
         }
-        paivitaHintaTeksti();
+        double tilausHinta = laskeHinta();
+        try {
+            tilausHinta = Double.valueOf(jtxtHinta.getText());
+        } catch (Exception e) {
+        }
         String tilausNimi = "";
         if (jbtngrpKoko.getSelection().getActionCommand().equals("NormaaliKoko")) {
             tilausNimi += "Normaali ";
@@ -425,7 +429,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             tilausNimi += "Perhe ";
         }
         tilausNimi += haeTaytteet();
-        tilaukset.lisaaTilaus(tilausNimi, laskeHinta(), haeMaara());
+        tilaukset.lisaaTilaus(tilausNimi, tilausHinta, haeMaara());
         paivitaKuitti();
     }//GEN-LAST:event_jbtnTilaaActionPerformed
 
@@ -491,6 +495,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         try {
             int nhinta = Integer.valueOf(jtxtNormaali.getText());
             jrdNormaali.setText("Normaali " + String.valueOf(nhinta) + " €");
+            paivitaHintaTeksti();
         } catch (Exception e) {
            
             jrdNormaali.setText("Normaali 5 €");
@@ -502,6 +507,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         try {
             int phinta = Integer.valueOf(jtxtPerhe.getText());
             jrdPerhe.setText("Perhe " + String.valueOf(phinta) + " €");
+            paivitaHintaTeksti();
         } catch (Exception e) {
            
             jrdPerhe.setText("Perhe 9 €");
