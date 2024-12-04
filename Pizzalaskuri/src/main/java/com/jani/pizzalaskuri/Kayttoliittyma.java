@@ -58,6 +58,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jtxtKuitti = new javax.swing.JTextArea();
         jtbnMuokkaa = new javax.swing.JButton();
         jbtnTyhjenna = new javax.swing.JButton();
+        jtxtNormaali = new javax.swing.JTextField();
+        jtxtPerhe = new javax.swing.JTextField();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -74,7 +76,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
         jbtngrpKoko.add(jrdNormaali);
         jrdNormaali.setSelected(true);
-        jrdNormaali.setText("Normaali 5€");
+        jrdNormaali.setText("Normaali 5 €");
         jrdNormaali.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jrdNormaaliActionPerformed(evt);
@@ -85,7 +87,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jLabel4.setText("Normaali ja perhepizzahintaan kuuluu pohja, tomaattikastike ja juusto.");
 
         jbtngrpKoko.add(jrdPerhe);
-        jrdPerhe.setText("Perhe 9€");
+        jrdPerhe.setText("Perhe 9 €");
         jrdPerhe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jrdPerheActionPerformed(evt);
@@ -177,6 +179,20 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             }
         });
 
+        jtxtNormaali.setText("5");
+        jtxtNormaali.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtxtNormaaliKeyReleased(evt);
+            }
+        });
+
+        jtxtPerhe.setText("9");
+        jtxtPerhe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtxtPerheKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,15 +200,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(50, 50, 50)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jrdNormaali)
-                                    .addComponent(jrdPerhe)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
@@ -222,8 +231,22 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                         .addComponent(jbtnTyhjenna, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(jLabel6)
                             .addComponent(jLabel7))
-                        .addGap(0, 79, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(50, 50, 50)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jrdPerhe)
+                                    .addComponent(jrdNormaali))
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtxtPerhe)
+                                    .addComponent(jtxtNormaali))
+                                .addGap(158, 158, 158))
+                            .addComponent(jScrollPane1))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,9 +260,12 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jrdNormaali))
+                    .addComponent(jrdNormaali, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtNormaali, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jrdPerhe)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jrdPerhe)
+                    .addComponent(jtxtPerhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -291,10 +317,18 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private double laskeHinta() {
         double hinta = 0;
         if (jbtngrpKoko.getSelection().getActionCommand().equals("NormaaliKoko")) {
-            hinta += 5;
+            try {
+                hinta += Integer.valueOf(jtxtNormaali.getText());
+            } catch (Exception e) {
+                hinta += 5;
+            }
         }
         else if (jbtngrpKoko.getSelection().getActionCommand().equals("PerheKoko")){
-            hinta += 9;
+            try {
+                hinta += Integer.valueOf(jtxtPerhe.getText());
+            } catch (Exception e) {
+                hinta += 9;
+            }
         }
         if (jchkKinkku.isSelected()) {
             hinta += 0.75;
@@ -452,6 +486,28 @@ public class Kayttoliittyma extends javax.swing.JFrame {
        }});
     }//GEN-LAST:event_jtbnMuokkaaActionPerformed
 
+    private void jtxtNormaaliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNormaaliKeyReleased
+        // TODO add your handling code here:
+        try {
+            int nhinta = Integer.valueOf(jtxtNormaali.getText());
+            jrdNormaali.setText("Normaali " + String.valueOf(nhinta) + " €");
+        } catch (Exception e) {
+           
+            jrdNormaali.setText("Normaali 5 €");
+        }
+    }//GEN-LAST:event_jtxtNormaaliKeyReleased
+
+    private void jtxtPerheKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtPerheKeyReleased
+        // TODO add your handling code here:
+        try {
+            int phinta = Integer.valueOf(jtxtPerhe.getText());
+            jrdPerhe.setText("Perhe " + String.valueOf(phinta) + " €");
+        } catch (Exception e) {
+           
+            jrdPerhe.setText("Perhe 9 €");
+        }
+    }//GEN-LAST:event_jtxtPerheKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -512,5 +568,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JTextField jtxtHinta;
     private javax.swing.JTextArea jtxtKuitti;
     private javax.swing.JTextField jtxtMaara;
+    private javax.swing.JTextField jtxtNormaali;
+    private javax.swing.JTextField jtxtPerhe;
     // End of variables declaration//GEN-END:variables
 }
