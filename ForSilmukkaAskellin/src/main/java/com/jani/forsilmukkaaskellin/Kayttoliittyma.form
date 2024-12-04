@@ -24,7 +24,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
@@ -41,15 +41,18 @@
                               </Group>
                           </Group>
                       </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jbtnTulosta" min="-2" pref="131" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jbtnTulostaFor" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="jbtnTulostaWhile" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace pref="39" max="32767" attributes="0"/>
                       <Component id="jtbnTyhjenna" min="-2" pref="89" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="26" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -70,8 +73,9 @@
               <Component id="jScrollPane1" min="-2" pref="184" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jbtnTulosta" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnTulostaFor" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jtbnTyhjenna" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnTulostaWhile" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="14" max="32767" attributes="0"/>
           </Group>
@@ -112,12 +116,12 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jbtnTulosta">
+    <Component class="javax.swing.JButton" name="jbtnTulostaFor">
       <Properties>
         <Property name="text" type="java.lang.String" value="Tulosta FOR"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnTulostaActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnTulostaForActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jtbnTyhjenna">
@@ -129,6 +133,14 @@
       </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="jspnRivivalit">
+    </Component>
+    <Component class="javax.swing.JButton" name="jbtnTulostaWhile">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tulosta WHILE"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnTulostaWhileActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

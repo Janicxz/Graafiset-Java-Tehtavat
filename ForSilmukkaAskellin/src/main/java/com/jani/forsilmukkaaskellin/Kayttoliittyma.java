@@ -33,9 +33,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jtxtRivit = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtxtareaRivit = new javax.swing.JTextArea();
-        jbtnTulosta = new javax.swing.JButton();
+        jbtnTulostaFor = new javax.swing.JButton();
         jtbnTyhjenna = new javax.swing.JButton();
         jspnRivivalit = new javax.swing.JSpinner();
+        jbtnTulostaWhile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,10 +50,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jtxtareaRivit.setRows(5);
         jScrollPane1.setViewportView(jtxtareaRivit);
 
-        jbtnTulosta.setText("Tulosta FOR");
-        jbtnTulosta.addActionListener(new java.awt.event.ActionListener() {
+        jbtnTulostaFor.setText("Tulosta FOR");
+        jbtnTulostaFor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnTulostaActionPerformed(evt);
+                jbtnTulostaForActionPerformed(evt);
             }
         });
 
@@ -63,12 +64,19 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             }
         });
 
+        jbtnTulostaWhile.setText("Tulosta WHILE");
+        jbtnTulostaWhile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnTulostaWhileActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -80,13 +88,16 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                                 .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jtxtRivit, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
-                                    .addComponent(jspnRivivalit)))))
+                                    .addComponent(jspnRivivalit))))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jbtnTulosta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtnTulostaFor, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jbtnTulostaWhile, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                         .addComponent(jtbnTyhjenna, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,8 +114,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnTulosta)
-                    .addComponent(jtbnTyhjenna))
+                    .addComponent(jbtnTulostaFor)
+                    .addComponent(jtbnTyhjenna)
+                    .addComponent(jbtnTulostaWhile))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -115,7 +127,7 @@ public class Kayttoliittyma extends javax.swing.JFrame {
        jtxtareaRivit.setText("");
     }//GEN-LAST:event_jtbnTyhjennaActionPerformed
 
-    private void jbtnTulostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnTulostaActionPerformed
+    private boolean tarkistaSyote() {
         int rivit;
         int rivivalit;
         try {
@@ -123,26 +135,62 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             rivivalit = (Integer)jspnRivivalit.getValue();
         } catch (Exception e) {
             JOptionPane.showInternalMessageDialog(null, "Rivit tai rivivälit syötetty väärin!\nSyötithän vain numeroita?", "Virhe", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
         if (rivit < 10 | rivit > 1000) {
             JOptionPane.showInternalMessageDialog(null, "Rivit syötetty väärin!\nVain lukuja väliltä 10-1000 sallittu.", "Virhe", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
         if (rivivalit < 2 || rivivalit > 20) {
             JOptionPane.showInternalMessageDialog(null, "Rivitvälit syötetty väärin!\nVain lukuja väliltä 2-20 sallittu.", "Virhe", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+    private void jbtnTulostaForActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnTulostaForActionPerformed
+        if (!tarkistaSyote()) {
             return;
         }
-        
-        String tuloste = "";
+ 
+        int rivit;
+        int rivivalit;
+        try {
+            rivit = Integer.parseInt(jtxtRivit.getText());
+            rivivalit = (Integer)jspnRivivalit.getValue();
+        } catch (Exception e) {
+            return;
+        }
         for (int i = 1; i <= rivit; i++) {
-            tuloste += String.format("%d ", i);
+            jtxtareaRivit.append(String.format("%d ", i));
             if (i % rivivalit == 0) {
-                tuloste += "\n";
+                jtxtareaRivit.append("\n");
             }
         }
-        jtxtareaRivit.setText(tuloste);
-    }//GEN-LAST:event_jbtnTulostaActionPerformed
+    }//GEN-LAST:event_jbtnTulostaForActionPerformed
+
+    private void jbtnTulostaWhileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnTulostaWhileActionPerformed
+        if (!tarkistaSyote()) {
+            return;
+        }
+
+        int rivit;
+        int rivivalit;
+        try {
+            rivit = Integer.parseInt(jtxtRivit.getText());
+            rivivalit = (Integer)jspnRivivalit.getValue();
+        } catch (Exception e) {
+            return;
+        }
+ 
+        int i = 1;
+        while ( i <= rivit ) {
+            jtxtareaRivit.append(String.format("%d ", i));
+            if (i % rivivalit == 0) {
+                jtxtareaRivit.append("\n");
+            }
+            i++;
+        }
+    }//GEN-LAST:event_jbtnTulostaWhileActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,7 +231,8 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbtnTulosta;
+    private javax.swing.JButton jbtnTulostaFor;
+    private javax.swing.JButton jbtnTulostaWhile;
     private javax.swing.JSpinner jspnRivivalit;
     private javax.swing.JButton jtbnTyhjenna;
     private javax.swing.JTextField jtxtRivit;
