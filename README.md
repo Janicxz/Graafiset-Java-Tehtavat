@@ -1,4 +1,10 @@
 # Graafiset-Java-Tehtavat
+
+
+# Pizzalaskuri / Pizza orders
+
+![netbeans64_2024-12-04_16-24-47](https://github.com/user-attachments/assets/f7883744-4b7b-4367-91b2-d89a2df0589c)
+
  
 # Asiakasrekisteri / Client registry
 A (unsecure) client registry frontend, loads/saves data from/to MySQL server.
