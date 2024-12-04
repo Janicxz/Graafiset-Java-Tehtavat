@@ -1,5 +1,9 @@
 # Graafiset-Java-Tehtavat
 
+# Parturi hinnoittelu / Haircut orders
+
+![kayttoliittyma](https://github.com/user-attachments/assets/5205533b-9c59-4ff4-98ad-26f175c27cff)
+
 
 # Pizzalaskuri / Pizza orders
 
