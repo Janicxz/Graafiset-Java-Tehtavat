@@ -153,6 +153,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 jtxtMaaraActionPerformed(evt);
             }
         });
+        jtxtMaara.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtxtMaaraKeyReleased(evt);
+            }
+        });
 
         jbtnTilaa.setText("Tilaa");
         jbtnTilaa.addActionListener(new java.awt.event.ActionListener() {
@@ -304,8 +309,14 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
     private boolean tarkistaSyotteet() {
         try {
-            Integer.valueOf(jtxtMaara.getText());
-            Double.valueOf(jtxtHinta.getText());
+            int maara = Integer.valueOf(jtxtMaara.getText());
+            if (maara <= 0) {
+                throw new Exception();
+            }
+            double hinta = Double.valueOf(jtxtHinta.getText());
+            if (hinta <= 0 ){
+                throw new Exception();
+            }
         } catch (Exception e) {
             //e.printStackTrace();
             JOptionPane.showInternalMessageDialog(null, "Määrä tai hinta syötetty väärin!", "Virhe", JOptionPane.ERROR_MESSAGE);
@@ -348,12 +359,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         if (jchkAurajuusto.isSelected()) {
             hinta += 0.5;
         }
-        try {
-            int maara = Integer.valueOf(jtxtMaara.getText());
-            hinta *= maara;
-        } catch (Exception e) {
-        }
-        
         return hinta;
     }
     
@@ -513,6 +518,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
             jrdPerhe.setText("Perhe 9 €");
         }
     }//GEN-LAST:event_jtxtPerheKeyReleased
+
+    private void jtxtMaaraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtMaaraKeyReleased
+        paivitaHintaTeksti();
+    }//GEN-LAST:event_jtxtMaaraKeyReleased
 
     /**
      * @param args the command line arguments

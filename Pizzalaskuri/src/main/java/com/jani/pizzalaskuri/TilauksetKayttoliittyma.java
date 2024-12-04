@@ -105,6 +105,9 @@ public class TilauksetKayttoliittyma extends javax.swing.JFrame {
 
     private void jbtnPoistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnPoistaActionPerformed
         int indeksi = jtblTilaukset.getSelectedRow();
+        if (indeksi == -1) {
+            return;
+        }
         tilaukset.poistaTilaus(indeksi);
         DefaultTableModel model  = (DefaultTableModel)jtblTilaukset.getModel();
         model.removeRow(indeksi);
