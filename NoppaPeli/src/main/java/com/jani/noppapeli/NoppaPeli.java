@@ -25,6 +25,9 @@ public class NoppaPeli extends javax.swing.JFrame {
     Noppa koneNoppa2;
     int koneSumma = 0;
     int pelaajaSumma = 0;
+    int peliVoitot = 0;
+    int peliHaviot = 0;
+    int peliTasapelit = 0;
     public NoppaPeli() {
         initComponents();
         pelaajaNoppa1 = new Noppa();
@@ -47,8 +50,16 @@ public class NoppaPeli extends javax.swing.JFrame {
         jlblNoppa2 = new javax.swing.JLabel();
         jlblPelaajaSumma = new javax.swing.JLabel();
         jlblKoneSumma = new javax.swing.JLabel();
+        jbtnAlaheita = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jlblVoitot = new javax.swing.JLabel();
+        jlblHaviot = new javax.swing.JLabel();
+        jlblTasapelit = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Ventti");
 
         jbtnHeita.setText("Heitä");
         jbtnHeita.addActionListener(new java.awt.event.ActionListener() {
@@ -63,14 +74,27 @@ public class NoppaPeli extends javax.swing.JFrame {
         jlblKoneSumma.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         jlblKoneSumma.setText("Kone Summa: ");
 
+        jbtnAlaheita.setText("Älä heitä");
+        jbtnAlaheita.setEnabled(false);
+        jbtnAlaheita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAlaheitaActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        jLabel1.setText("Voitot:");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        jLabel2.setText("Häviöt:");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        jLabel3.setText("Tasapelit:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(174, 174, 174)
-                .addComponent(jbtnHeita)
-                .addContainerGap(219, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,9 +105,25 @@ public class NoppaPeli extends javax.swing.JFrame {
                         .addGap(63, 63, 63))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlblPelaajaSumma)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
                         .addComponent(jlblKoneSumma)
                         .addGap(88, 88, 88))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlblVoitot)
+                    .addComponent(jlblTasapelit)
+                    .addComponent(jlblHaviot))
+                .addGap(52, 52, 52)
+                .addComponent(jbtnHeita)
+                .addGap(33, 33, 33)
+                .addComponent(jbtnAlaheita)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,17 +137,109 @@ public class NoppaPeli extends javax.swing.JFrame {
                     .addComponent(jlblNoppa1)
                     .addComponent(jlblNoppa2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
-                .addComponent(jbtnHeita)
-                .addGap(44, 44, 44))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jbtnHeita)
+                        .addComponent(jbtnAlaheita))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jlblVoitot))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jlblHaviot))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jlblTasapelit))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean peliAly_koneHeittaa() {
+        if (koneSumma < 16 || koneSumma < pelaajaSumma) {
+            koneNoppa1.heita();
+            koneNoppa2.heita();
+            koneSumma += koneNoppa1.haeLuku() + koneNoppa2.haeLuku();
+            jlblKoneSumma.setText(String.format("Kone summa: %d", koneSumma));
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     
-    
-    private void jbtnHeitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHeitaActionPerformed
-
+    private void peliNollaa() {
+        pelaajaSumma = 0;
+        koneSumma = 0;
+        jbtnAlaheita.setEnabled(false);
+        jlblVoitot.setText(String.valueOf(peliVoitot));
+        jlblHaviot.setText(String.valueOf(peliHaviot));
+        jlblTasapelit.setText(String.valueOf(peliTasapelit));
+    }
+    private void peliTarkistaPisteet(boolean viimeinenHeitto) {
+        // Pelaaja heitti 21
+        if (pelaajaSumma == 21 ){ 
+            JOptionPane.showInternalMessageDialog(null, String.format("Heitit 21! Voitit pelin.", koneSumma));
+            peliVoitot++;
+            peliNollaa();
+            return;
+        }
+        // Kone heitti 21
+        if (koneSumma == 21 ){ 
+            JOptionPane.showInternalMessageDialog(null, String.format("Kone heitti 21! Hävisit pelin.", koneSumma));
+            peliHaviot++;
+            peliNollaa();
+            return;
+        }
+        // Jos kummatkin heitti yli 21
+        if (pelaajaSumma > 21 && koneSumma > 21) {
+            JOptionPane.showInternalMessageDialog(null, String.format("Kummatkin heitti yli 21, tasapeli.", koneSumma));
+            peliTasapelit++;
+            peliNollaa();
+            return;
+        }
+        // Jos pelaaja heitti yli 21
+        if (pelaajaSumma > 21) {
+            JOptionPane.showInternalMessageDialog(null, String.format("Heitit yli 21, kone voitti kädellä %d", koneSumma));
+            peliHaviot++;
+            peliNollaa();
+            return;
+        }
+        // Jos kone heitti yli 21
+        if (koneSumma > 21) {
+            JOptionPane.showInternalMessageDialog(null, String.format("Kone heitti yli 21, voitit kädellä %d", pelaajaSumma));
+            peliVoitot++;
+            peliNollaa();
+            return;
+        }
+        // Kaikki on heittänyt, tarkistetaan kenellä on suurin käsi.
+        if (viimeinenHeitto) {
+            if (pelaajaSumma > koneSumma) {
+                JOptionPane.showInternalMessageDialog(null, String.format("Voitit kädellä %d, koneella oli käsi %d", pelaajaSumma, koneSumma));
+                peliVoitot++;
+                peliNollaa();
+                return;
+            }
+            else if (koneSumma > pelaajaSumma) {
+                JOptionPane.showInternalMessageDialog(null, String.format("Hävisit kädellä %d, koneella oli käsi %d", pelaajaSumma, koneSumma));
+                peliHaviot++;
+                peliNollaa();
+                return;
+            }
+            else {
+                JOptionPane.showInternalMessageDialog(null, String.format("Tasapeli kädellä %d, koneella oli käsi %d", pelaajaSumma, koneSumma));
+                peliTasapelit++;
+                peliNollaa();
+                return;
+            }   
+        }
+    }
+    private void pelaajaHeittaa() {
+        // Pelaaja voi heittää
         if (pelaajaSumma < 21) {
             pelaajaNoppa1.heita();
             pelaajaNoppa2.heita();
@@ -118,51 +250,33 @@ public class NoppaPeli extends javax.swing.JFrame {
             pelaajaSumma += pelaajaNoppa1.haeLuku() + pelaajaNoppa2.haeLuku();
             jlblPelaajaSumma.setText(String.format("Pelaaja summa: %d", pelaajaSumma));
         }
-        if (koneSumma < 21) {    
-            koneNoppa1.heita();
-            koneNoppa2.heita();
-            koneSumma += koneNoppa1.haeLuku() + koneNoppa2.haeLuku();
-            jlblKoneSumma.setText(String.format("Kone summa: %d", koneSumma));
+    }
+    private void peliKasitteleVuoro(boolean pelaajaHeittaa) {
+        if (pelaajaHeittaa) {
+            // Pelaajan heitto
+            jbtnAlaheita.setEnabled(true);
+            pelaajaHeittaa();
+            // Koneen heitto
+            peliAly_koneHeittaa();
+            // Tarkista pelin tilanne
+            peliTarkistaPisteet(false);
         }
-        if (pelaajaSumma > 21 && koneSumma > 21) {
-            JOptionPane.showInternalMessageDialog(null, String.format("Kummatkin heitti yli 21, tasapeli.", koneSumma));
-            pelaajaSumma = 0;
-            koneSumma = 0;
-            return;
-        }
-        
-        if (pelaajaSumma > 21) {
-            JOptionPane.showInternalMessageDialog(null, String.format("Heitit yli 21, kone voitti pisteillä %d", koneSumma));
-            pelaajaSumma = 0;
-            koneSumma = 0;
-            return;
-        }
-        if (koneSumma > 21) {
-            JOptionPane.showInternalMessageDialog(null, String.format("Kone heitti yli 21, voitit pisteillä %d", pelaajaSumma));
-            pelaajaSumma = 0;
-            koneSumma = 0;
-            return;
-        }
-        
-        /*TimerTask noppaHeitto = new TimerTask() {
-            @Override
-            public void run() {
-
-            pelaajaNoppa1.heita();
-            pelaajaNoppa2.heita();
-
-            jlblNoppa1.setIcon(pelaajaNoppa1.haeKuva());
-            jlblNoppa2.setIcon(pelaajaNoppa2.haeKuva());
+        else {
+            // Kone heittelee nopat
+            while (peliAly_koneHeittaa()) {
             }
-        };
-        Timer noppaTimer = new Timer();
-        */
-        
-        
+            // Tarkistetaan tilanne viimeisen kerran
+            peliTarkistaPisteet(true);
+        }
+    }
     
-        //jlblNoppa1.setText(String.format("Noppa 1 : %d", pelaajaNoppa1.haeLuku()));
-        //jlblNoppa2.setText(String.format("Noppa 2 : %d", pelaajaNoppa2.haeLuku()));
+    private void jbtnHeitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHeitaActionPerformed
+        peliKasitteleVuoro(true);
     }//GEN-LAST:event_jbtnHeitaActionPerformed
+
+    private void jbtnAlaheitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAlaheitaActionPerformed
+        peliKasitteleVuoro(false);
+    }//GEN-LAST:event_jbtnAlaheitaActionPerformed
 
     
     
@@ -202,10 +316,17 @@ public class NoppaPeli extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton jbtnAlaheita;
     private javax.swing.JButton jbtnHeita;
+    private javax.swing.JLabel jlblHaviot;
     private javax.swing.JLabel jlblKoneSumma;
     private javax.swing.JLabel jlblNoppa1;
     private javax.swing.JLabel jlblNoppa2;
     private javax.swing.JLabel jlblPelaajaSumma;
+    private javax.swing.JLabel jlblTasapelit;
+    private javax.swing.JLabel jlblVoitot;
     // End of variables declaration//GEN-END:variables
 }

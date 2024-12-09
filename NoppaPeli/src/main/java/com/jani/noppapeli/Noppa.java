@@ -30,7 +30,6 @@ public class Noppa {
         this.LUKU = luku;
     }
     public ImageIcon haeKuva() {
-        //URL res = getClass().getResource("/com/jani/noppapeli/Resource/" + String.valueOf(this.LUKU) + "_dots.png");
         this.KUVA = new ImageIcon(String.valueOf(this.LUKU) + "_dots.png");
         return this.KUVA;
     }
