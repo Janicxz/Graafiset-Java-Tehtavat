@@ -17,10 +17,10 @@ public class Noppa {
     private Random RAND;
     private ImageIcon KUVA;
     public Noppa() {
-        RAND = new Random();
+        this.RAND = new Random();
     }
     public int heita() {
-        this.LUKU = RAND.nextInt(6) + 1;
+        this.LUKU = this.RAND.nextInt(6) + 1;
         return this.LUKU;
     }
     public int haeLuku() {

@@ -159,7 +159,9 @@ public class NoppaPeli extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Käsittele koneen heitto
     private boolean peliAly_koneHeittaa() {
+        // Kone heittää noppaa jos käsi alle 16 tai pelaajalla on suurempi käsi
         if (koneSumma < 16 || koneSumma < pelaajaSumma) {
             koneNoppa1.heita();
             koneNoppa2.heita();
@@ -171,7 +173,7 @@ public class NoppaPeli extends javax.swing.JFrame {
             return false;
         }
     }
-    
+    // Nollaa pelin arvot
     private void peliNollaa() {
         pelaajaSumma = 0;
         koneSumma = 0;
@@ -180,6 +182,7 @@ public class NoppaPeli extends javax.swing.JFrame {
         jlblHaviot.setText(String.valueOf(peliHaviot));
         jlblTasapelit.setText(String.valueOf(peliTasapelit));
     }
+    // Tarkista pelin pistetilanne
     private void peliTarkistaPisteet(boolean viimeinenHeitto) {
         // Pelaaja heitti 21
         if (pelaajaSumma == 21 ){ 
@@ -238,6 +241,7 @@ public class NoppaPeli extends javax.swing.JFrame {
             }   
         }
     }
+    // Käsittele pelaajan heitto
     private void pelaajaHeittaa() {
         // Pelaaja voi heittää
         if (pelaajaSumma < 21) {
@@ -251,6 +255,7 @@ public class NoppaPeli extends javax.swing.JFrame {
             jlblPelaajaSumma.setText(String.format("Pelaaja summa: %d", pelaajaSumma));
         }
     }
+    // Käsittele pelin vuoro
     private void peliKasitteleVuoro(boolean pelaajaHeittaa) {
         if (pelaajaHeittaa) {
             // Pelaajan heitto
